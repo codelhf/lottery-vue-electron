@@ -39,20 +39,42 @@ export const constantRoutes = [
 
   {
     path: '/404',
-    component: () => import('@/views/404'),
+    component: () => import('@/views/error/404'),
     hidden: true
   },
 
   {
     path: '/',
+    component: () => import('@/views/home/index'),
+    hidden: true
+  },
+
+  {
+    path: '/prize',
     component: Layout,
-    redirect: '/home',
-    children: [{
-      path: 'home',
-      name: 'Home',
-      component: () => import('@/views/About'),
-      meta: { title: '首页', icon: 'dashboard' }
-    }]
+    redirect: '/prize/index',
+    children: [
+      {
+        path: 'index',
+        name: 'Prize',
+        component: () => import('@/views/prize/index'),
+        meta: { title: '奖品管理', icon: 'dashboard' }
+      }
+    ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/index',
+    children: [
+      {
+        path: 'index',
+        name: 'User',
+        component: () => import('@/views/user/index'),
+        meta: { title: '人员管理', icon: 'dashboard' }
+      }
+    ]
   },
 
   // 404 page must be placed at the end !!!

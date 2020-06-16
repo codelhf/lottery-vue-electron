@@ -3,16 +3,16 @@
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
+        mode="vertical"
         :default-active="activeMenu"
         :collapse="isCollapse"
         :background-color="variables.menuBg"
         :text-color="variables.menuText"
-        :unique-opened="false"
         :active-text-color="variables.menuActiveText"
+        :unique-opened="false"
         :collapse-transition="false"
-        mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="item in routes" :key="item.path" :item="item" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -30,8 +30,11 @@ export default {
     ...mapGetters([
       'sidebar'
     ]),
-    routes() {
-      return this.$router.options.routes
+    showLogo() {
+      return this.$store.state.settings.sidebarLogo
+    },
+    isCollapse() {
+      return !this.sidebar.opened
     },
     activeMenu() {
       const route = this.$route
@@ -42,14 +45,11 @@ export default {
       }
       return path
     },
-    showLogo() {
-      return this.$store.state.settings.sidebarLogo
-    },
     variables() {
       return variables
     },
-    isCollapse() {
-      return !this.sidebar.opened
+    routes() {
+      return this.$router.options.routes
     }
   }
 }

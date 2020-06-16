@@ -1,12 +1,13 @@
 <template>
   <el-upload
-      class="avatar-uploader"
-      action="http://localhost:9080/#/"
-      :auto-upload="true"
-      :show-file-list="false"
-      :before-upload="beforeAvatarUpload">
+    class="avatar-uploader"
+    action="http://localhost:9080/#/"
+    :auto-upload="true"
+    :show-file-list="false"
+    :before-upload="beforeAvatarUpload"
+  >
     <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="avatar">
-    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    <i v-else class="el-icon-plus avatar-uploader-icon" />
   </el-upload>
 </template>
 
@@ -16,6 +17,7 @@ import { imagePath } from '@/utils/init'
 export default {
   name: 'Upload',
   props: {
+    // eslint-disable-next-line vue/require-default-prop
     fileUrl: {
       type: String,
       required: false

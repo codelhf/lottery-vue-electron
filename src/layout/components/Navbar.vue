@@ -11,8 +11,8 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <a target="_blank" href="#/monitor/bigScreen">
-            <el-dropdown-item>监控大屏</el-dropdown-item>
+          <a target="_blank" href="/">
+            <el-dropdown-item>Home</el-dropdown-item>
           </a>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">登出</span>
