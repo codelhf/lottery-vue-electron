@@ -58,7 +58,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Prize',
         component: () => import('@/views/prize/index'),
-        meta: { title: '奖品管理', icon: 'dashboard' }
+        meta: { title: '奖品管理', icon: 'prize' }
       }
     ]
   },
@@ -72,7 +72,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'User',
         component: () => import('@/views/user/index'),
-        meta: { title: '人员管理', icon: 'dashboard' }
+        meta: { title: '人员管理', icon: 'user' }
       }
     ]
   },

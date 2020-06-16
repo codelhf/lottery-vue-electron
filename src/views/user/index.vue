@@ -153,7 +153,6 @@ export default {
         this.list.map(item => {
           item.operateTime = parseTime(item.operateTime)
         })
-        console.log(this.list)
         this.total = res.data.total
         // Just to simulate the time of the request
         setTimeout(() => {

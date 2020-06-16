@@ -1,7 +1,7 @@
 <template>
   <el-upload
     class="avatar-uploader"
-    action="http://localhost:9080/#/"
+    action="/"
     :auto-upload="true"
     :show-file-list="false"
     :before-upload="beforeAvatarUpload"
@@ -17,10 +17,9 @@ import { imagePath } from '@/utils/init'
 export default {
   name: 'Upload',
   props: {
-    // eslint-disable-next-line vue/require-default-prop
     fileUrl: {
       type: String,
-      required: false
+      required: true
     }
   },
   data() {
