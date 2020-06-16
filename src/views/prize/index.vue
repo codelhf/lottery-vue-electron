@@ -27,7 +27,9 @@
     >
       <el-table-column label="奖品图片" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.image }}</span>
+          <div class="table-column-image">
+            <img :src="row.image" alt="image">
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="奖品名称" align="center">
@@ -212,5 +214,15 @@ export default {
 </script>
 
 <style scoped>
-
+  .table-column-image{
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+  }
+  .table-column-image img{
+    width: 100%;
+    height: 100%;
+  }
 </style>

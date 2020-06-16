@@ -19,7 +19,7 @@ export default {
   props: {
     fileUrl: {
       type: String,
-      required: true
+      default: ''
     }
   },
   data() {
@@ -28,7 +28,7 @@ export default {
     }
   },
   created() {
-    this.imageUrl = this.fileUrl || ''
+    this.imageUrl = this.fileUrl
   },
   methods: {
     beforeAvatarUpload(file) {
