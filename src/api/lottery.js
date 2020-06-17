@@ -3,14 +3,14 @@ import request from '@/utils/request'
 export function selectPrize() {
   return request({
     url: '/lottery/prize',
-    type: 'get'
+    method: 'get'
   })
 }
 
 export function selectStock(prizeId) {
   return request({
     url: '/lottery/stock',
-    type: 'get',
+    method: 'get',
     params: { prizeId }
   })
 }
@@ -18,14 +18,14 @@ export function selectStock(prizeId) {
 export function selectUser() {
   return request({
     url: '/lottery/user',
-    type: 'get'
+    method: 'get'
   })
 }
 
 export function startOne(prizeId) {
   return request({
     url: '/lottery/startOne',
-    type: 'get',
+    method: 'get',
     params: { prizeId }
   })
 }
@@ -33,7 +33,7 @@ export function startOne(prizeId) {
 export function startAll(prizeId) {
   return request({
     url: '/lottery/startAll',
-    type: 'get',
+    method: 'get',
     params: { prizeId }
   })
 }
@@ -41,6 +41,6 @@ export function startAll(prizeId) {
 export function resetAll() {
   return request({
     url: '/lottery/resetAll',
-    type: 'put'
+    method: 'put'
   })
 }

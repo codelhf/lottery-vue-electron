@@ -4,11 +4,14 @@ import { buildPage, success, successMsg, fail } from './mock-result'
 export default [
   // user list
   {
-    url: '/user',
+    url: '/user\$',
     type: 'get',
     response: config => {
       const params = config.query
       const userList = request.read().get('users').value()
+      if (!userList) {
+        return fail('no data')
+      }
       const pageInfo = buildPage(params, userList)
       const prizeList = request.read().get('prizes').value()
       pageInfo.list.map(item => {
@@ -19,15 +22,12 @@ export default [
           }
         })
       })
-      if (!userList) {
-        return fail('no data')
-      }
       return success(pageInfo)
     }
   },
   // user item
   {
-    url: '/user/\*',
+    url: '/user/',
     type: 'get',
     response: config => {
       const { id } = config.query
@@ -58,7 +58,7 @@ export default [
   },
   // update user
   {
-    url: '/user/\*',
+    url: '/user/',
     type: 'put',
     response: config => {
       const formData = config.body
@@ -76,7 +76,7 @@ export default [
   },
   // delete user
   {
-    url: '/user/\*',
+    url: '/user/',
     type: 'delete',
     response: config => {
       const { id } = config.query

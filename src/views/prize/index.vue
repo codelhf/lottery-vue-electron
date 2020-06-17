@@ -118,7 +118,7 @@ export default {
       listQuery: {
         currentPage: 1,
         pageLimit: 10,
-        sort: '+update_time',
+        sort: '+number',
         name: '',
         description: ''
       },
@@ -166,7 +166,7 @@ export default {
       this.listQuery = {
         currentPage: 1,
         pageLimit: 10,
-        sort: '+update_time',
+        sort: '+number',
         name: '',
         description: ''
       }

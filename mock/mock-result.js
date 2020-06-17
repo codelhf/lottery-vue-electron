@@ -57,9 +57,19 @@ export function buildPage(params, list) {
   if (flag === 0) {
     filter = list
   }
-  filter.sort((a, b) => {
-    return a[sort] - b[sort]
-  })
+  if (sort) {
+    filter.sort((a, b) => {
+      if (sort.toString().startsWith('+')) {
+        const field = sort.substr(1)
+        return a[field] - b[field]
+      } else if (sort.toString().startsWith('-')) {
+        const field = sort.substr(1)
+        return b[field] - a[field]
+      } else {
+        return a[sort] - b[sort]
+      }
+    })
+  }
   console.log(filter)
   return {
     list: filter.slice(indexStart, indexEnd),

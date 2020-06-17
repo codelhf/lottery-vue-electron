@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function fetchUserList(params) {
   return request({
     url: '/user',
-    type: 'get',
+    method: 'get',
     params
   })
 }
@@ -11,14 +11,15 @@ export function fetchUserList(params) {
 export function fetchUser(id) {
   return request({
     url: '/user/' + id,
-    type: 'get'
+    method: 'get',
+    params: { id }
   })
 }
 
 export function createUser(formData) {
   return request({
     url: '/user',
-    type: 'post',
+    method: 'post',
     data: formData
   })
 }
@@ -26,7 +27,7 @@ export function createUser(formData) {
 export function updateUser(formData) {
   return request({
     url: '/user/' + formData.id,
-    type: 'put',
+    method: 'put',
     data: formData
   })
 }
@@ -34,6 +35,7 @@ export function updateUser(formData) {
 export function deleteUser(id) {
   return request({
     url: '/user/' + id,
-    type: 'delete'
+    method: 'delete',
+    params: { id }
   })
 }

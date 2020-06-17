@@ -4,21 +4,21 @@ import { buildPage, success, successMsg, fail } from './mock-result'
 export default [
   // prize list
   {
-    url: '/prize',
+    url: '/prize\$',
     type: 'get',
     response: config => {
       const params = config.query
       const prizeList = request.read().get('prizes').value()
-      const pageInfo = buildPage(params, prizeList)
       if (!prizeList) {
         return fail('no data')
       }
+      const pageInfo = buildPage(params, prizeList)
       return success(pageInfo)
     }
   },
   // prize item
   {
-    url: '/prize/\*',
+    url: '/prize/',
     type: 'get',
     response: config => {
       const { id } = config.query
@@ -49,7 +49,7 @@ export default [
   },
   // update prize
   {
-    url: '/prize/\*',
+    url: '/prize/',
     type: 'put',
     response: config => {
       const formData = config.body
@@ -67,7 +67,7 @@ export default [
   },
   // delete prize
   {
-    url: '/prize/\*',
+    url: '/prize/',
     type: 'delete',
     response: config => {
       const { id } = config.query

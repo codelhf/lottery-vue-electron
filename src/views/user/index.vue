@@ -152,6 +152,9 @@ export default {
     getAllPrize() {
       fetchPrizeList({}).then(res => {
         this.allPrize = res.data.list
+        this.allPrize.sort((a, b) => {
+          return a.number - b.number
+        })
       })
     },
     getList() {

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function fetchPrizeList(params) {
   return request({
     url: '/prize',
-    type: 'get',
+    method: 'get',
     params
   })
 }
@@ -11,14 +11,15 @@ export function fetchPrizeList(params) {
 export function fetchPrize(id) {
   return request({
     url: '/prize/' + id,
-    type: 'get'
+    method: 'get',
+    params: { id }
   })
 }
 
 export function createPrize(formData) {
   return request({
     url: '/prize',
-    type: 'post',
+    method: 'post',
     data: formData
   })
 }
@@ -26,7 +27,7 @@ export function createPrize(formData) {
 export function updatePrize(formData) {
   return request({
     url: '/prize/' + formData.id,
-    type: 'put',
+    method: 'put',
     data: formData
   })
 }
@@ -34,6 +35,7 @@ export function updatePrize(formData) {
 export function deletePrize(id) {
   return request({
     url: '/prize/' + id,
-    type: 'delete'
+    method: 'delete',
+    params: { id }
   })
 }
