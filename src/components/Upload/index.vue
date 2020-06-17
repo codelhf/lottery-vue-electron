@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import path from 'path'
 import fse from 'fs-extra'
 import { imagePath } from '@/utils/init'
 export default {
@@ -38,8 +39,9 @@ export default {
       }
       console.log('before', file)
       // 移动图片
-      this.imageUrl = imagePath + '/' + file.name
-      fse.copySync(file.path, this.imageUrl)
+      const filePath = path.join(imagePath, file.name)
+      fse.copySync(file.path, filePath)
+      this.imageUrl = 'local-resource:///' + filePath.replace(/\\/g, '/')
       this.$emit('upload-path', this.imageUrl)
       return isLt2M
     }

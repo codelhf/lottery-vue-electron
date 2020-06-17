@@ -22,8 +22,7 @@ function createWindow() {
     webPreferences: {
     // Use pluginOptions.nodeIntegration, leave this alone
     // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      webSecurity: false
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
   })
 
@@ -39,6 +38,26 @@ function createWindow() {
 
   win.on('closed', () => {
     win = null
+  })
+}
+
+function registerLocalResourceProtocol() {
+  // If WebSecurity is enabled, you won't be able to load resources from the file system,
+  // ie <img src="file:///path/to/some/image.png"/>. However, you will still be able to load images
+  // and other resources from the public folder, see handling static assets. If you need to
+  // load resources from outside of the public folder you will have to disable WebSecurity or
+  // use a custom protocol. Disabling WebSecurity is strongly discouraged, so you should instead use
+  // the following technique to load local resources and keep WebSecurity enabled.
+  protocol.registerFileProtocol('local-resource', (request, callback) => {
+    const url = request.url.replace(/^local-resource:\/\//, '')
+    // Decode URL to prevent errors when loading filenames with UTF-8 chars or chars like "#"
+    const decodedUrl = decodeURI(url) // Needed in case URL contains spaces
+    try {
+      return callback(decodedUrl)
+    }
+    catch (error) {
+      console.error('ERROR: registerLocalResourceProtocol: Could not get file path:', error)
+    }
   })
 }
 
@@ -78,6 +97,7 @@ app.on('ready', async() => {
 
   }
   createWindow()
+  registerLocalResourceProtocol()
 })
 
 // Exit cleanly on request from parent process in development mode.
