@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchPrizeList(params) {
   return request({
-    url: '/prize',
+    url: '/prize/list',
     method: 'get',
     params
   })

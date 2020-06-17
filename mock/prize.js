@@ -4,7 +4,7 @@ import { buildPage, success, successMsg, fail } from './mock-result'
 export default [
   // prize list
   {
-    url: '/prize\$',
+    url: '/prize/list',
     type: 'get',
     response: config => {
       const params = config.query
