@@ -26,42 +26,42 @@
       border="border"
     >
       <el-table-column label="奖品图片" align="center">
-        <template slot-scope="{row}">
+        <template slot-scope="scope">
           <div class="table-column-image">
-            <img :src="row.image" alt="image">
+            <img v-if="scope.row.image" :src="scope.row.image" alt="">
           </div>
         </template>
       </el-table-column>
       <el-table-column label="奖品名称" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="奖品描述" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.description }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
       <el-table-column label="奖品数量" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.stock }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.stock }}</span>
         </template>
       </el-table-column>
       <el-table-column label="奖品顺序" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.number }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.number }}</span>
         </template>
       </el-table-column>
       <el-table-column label="修改时间" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.operateTime }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.operateTime }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="260">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handlePrizeUser(row.id)">中奖人员</el-button>
-          <el-button type="primary" size="mini" @click="handleDetail(row.id)">详情</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(row.id)">删除</el-button>
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handlePrizeUser(scope.row.id)">中奖人员</el-button>
+          <el-button type="primary" size="mini" @click="handleDetail(scope.row.id)">详情</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -31,43 +31,43 @@
       border="border"
     >
       <el-table-column label="人员头像" align="center">
-        <template slot-scope="{row}">
+        <template slot-scope="scope">
           <div class="table-column-image">
-            <img :src="row.avatar" alt="avatar">
+            <img v-if="scope.row.avatar" :src="scope.row.avatar" alt="avatar">
           </div>
         </template>
       </el-table-column>
       <el-table-column label="人员名称" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.username }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column label="人员描述" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.description }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
       <el-table-column label="奖品图片" align="center">
-        <template slot-scope="{row}">
+        <template slot-scope="scope">
           <div class="table-column-image">
-            <img :src="row.prizeImage" alt="prizeImage">
+            <img v-if="scope.row.prizeImage" :src="scope.row.prizeImage" alt="prizeImage">
           </div>
         </template>
       </el-table-column>
       <el-table-column label="奖品名称" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.prizeName }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.prizeName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="修改时间" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.operateTime }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.operateTime }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="160">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleDetail(row.id)">详情</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(row.id)">删除</el-button>
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleDetail(scope.row.id)">详情</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -119,7 +119,7 @@ export default {
       listQuery: {
         currentPage: 1,
         pageLimit: 10,
-        sort: '+update_time',
+        sort: '-operateTime',
         prizeId: '',
         username: '',
         description: ''
@@ -179,7 +179,7 @@ export default {
       this.listQuery = {
         currentPage: 1,
         pageLimit: 10,
-        sort: '+update_time',
+        sort: '-operateTime',
         prizeId: '',
         username: '',
         description: ''
