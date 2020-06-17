@@ -18,18 +18,10 @@ import { imagePath } from '@/utils/init'
 export default {
   name: 'Upload',
   props: {
-    fileUrl: {
+    imageUrl: {
       type: String,
-      default: ''
+      default: null
     }
-  },
-  data() {
-    return {
-      imageUrl: ''
-    }
-  },
-  created() {
-    this.imageUrl = this.fileUrl
   },
   methods: {
     beforeAvatarUpload(file) {
@@ -41,8 +33,8 @@ export default {
       // 移动图片
       const filePath = path.join(imagePath, file.name)
       fse.copySync(file.path, filePath)
-      this.imageUrl = 'local-resource:///' + filePath.replace(/\\/g, '/')
-      this.$emit('upload-path', this.imageUrl)
+      // this.imageUrl = 'local-resource:///' + filePath.replace(/\\/g, '/')
+      this.$emit('upload-path', 'local-resource:///' + filePath.replace(/\\/g, '/'))
       return isLt2M
     }
   }

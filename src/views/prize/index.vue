@@ -74,7 +74,7 @@
     >
       <el-form ref="prizeForm" :model="prize" :rules="prizeRules" label-width="120px" label-suffix=":">
         <el-form-item label="奖品图片" prop="image">
-          <upload-image :file-url="prize.image" @upload-path="uploadFilePath" />
+          <upload-image :image-url="prize.image" @upload-path="uploadFilePath" />
         </el-form-item>
         <el-form-item label="奖品名称" prop="name">
           <el-input v-model="prize.name" placeholder="请输入奖品名称" />

@@ -1,4 +1,4 @@
-import request from '@/utils/init-data'
+import request from '../src/utils/init-data'
 import { success, fail } from './mock-result'
 
 export default [

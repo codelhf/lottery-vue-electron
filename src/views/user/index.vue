@@ -80,7 +80,7 @@
     >
       <el-form ref="userForm" :model="user" :rules="userRules" label-width="120px" label-suffix=":">
         <el-form-item label="人员头像" prop="avatar">
-          <upload-image :file-url="user.avatar" @upload-path="uploadFilePath" />
+          <upload-image :image-url="user.avatar" @upload-path="uploadFilePath" />
         </el-form-item>
         <el-form-item label="人员名称" prop="username">
           <el-input v-model="user.username" placeholder="请输入人员名称" />
