@@ -13,7 +13,7 @@
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
           <el-button type="primary" icon="el-icon-refresh" @click="handleReset">重置</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="handleDetail()">增加奖品</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="handleDetail">增加奖品</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -59,7 +59,7 @@
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="260">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleDetail(row.id)">中奖人员</el-button>
+          <el-button type="primary" size="mini" @click="handlePrizeUser(row.id)">中奖人员</el-button>
           <el-button type="primary" size="mini" @click="handleDetail(row.id)">详情</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(row.id)">删除</el-button>
         </template>
@@ -170,6 +170,9 @@ export default {
         name: '',
         description: ''
       }
+    },
+    handlePrizeUser(id) {
+      this.$router.push(`/user?prizeId=${id}`)
     },
     handleDetail(id) {
       this.dialogFormVisible = true

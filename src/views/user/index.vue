@@ -141,6 +141,10 @@ export default {
     }
   },
   created() {
+    const { prizeId } = this.$route.query
+    if (prizeId) {
+      this.listQuery.prizeId = prizeId
+    }
     this.getAllPrize()
     this.getList()
   },
