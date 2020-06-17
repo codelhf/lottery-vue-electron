@@ -18,7 +18,7 @@
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
           <el-button type="primary" icon="el-icon-refresh" @click="handleReset">重置</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="handleDetail">增加人员</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="handleDetail()">增加人员</el-button>
         </el-form-item>
       </el-row>
     </el-form>
