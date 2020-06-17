@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <!--奖品区-->
-    <el-row style="text-align: center; padding-top: 10px">
+    <el-row style="text-align: center; padding-top: 20px">
       <el-col :span="2">
         <el-button type="warning" size="small" icon="el-icon-menu" @click="toHome" />
         <el-button type="danger" size="small" icon="el-icon-refresh-left" @click="reset" />
@@ -15,7 +15,7 @@
           @change="changeCurrentPrize"
         >
           <el-carousel-item v-for="item in allPrize" :key="item.id">
-            <h3>{{ item.name }}</h3>
+            <h3 class="prize">{{ item.name }}</h3>
           </el-carousel-item>
         </el-carousel>
       </el-col>
@@ -26,7 +26,7 @@
         <el-carousel
           direction="vertical"
           indicator-position="none"
-          height="520px"
+          height="440px"
           :autoplay="autoplay"
           :interval="interval"
           @change="changeCurrentUser"
@@ -36,6 +36,7 @@
           </el-carousel-item>
         </el-carousel>
       </el-col>
+      <audio id="playAction" autoplay="autoplay" loop="loop" src=""></audio>
     </el-row>
     <!--操控区-->
     <el-row style="text-align: center; padding-top: 10px">
@@ -72,6 +73,7 @@ export default {
       type: '单抽',
       autoplay: false,
       interval: 1000,
+      stopStep: 5,
       stopUserIndex: null,
       prizeUserIndex: null
     }
@@ -144,10 +146,10 @@ export default {
       }
       this.showLoading = true
       this.prizeUserIndex = 19
-      if (this.prizeUserIndex > 5) {
-        this.stopUserIndex = this.prizeUserIndex - 5
+      if (this.prizeUserIndex > this.stopStep) {
+        this.stopUserIndex = this.prizeUserIndex - this.stopStep
       } else {
-        this.stopUserIndex = this.noPrizeUser.length - 5 + this.prizeUserIndex
+        this.stopUserIndex = this.noPrizeUser.length - this.stopStep + this.prizeUserIndex
       }
       // if (this.type === '单抽') {
       //   startOne(prizeId).then(res => {
@@ -163,7 +165,8 @@ export default {
       // }
     },
     slowRun() {
-      if (this.interval <= 200 * 5) {
+      // 1000 < stopStep * 200 + 300
+      if (this.interval <= 1000) {
         this.autoplay = false
         this.interval = this.interval + 200
         setTimeout(() => {
@@ -174,13 +177,13 @@ export default {
     },
     changeCurrentUser(index) {
       this.currentTime = new Date().getTime()
-      console.log(this.prizeUserIndex, this.interval, this.currentTime - this.lastTime)
+      console.log(index, this.prizeUserIndex, this.stopUserIndex, this.interval, this.currentTime - this.lastTime)
       this.lastTime = this.currentTime
       if (index === this.stopUserIndex) {
         // 开始减速
         this.slowRun()
       }
-      if (index === this.prizeUserIndex && this.interval > 200 * 5) {
+      if (index === this.prizeUserIndex && this.interval > 1000) {
         // 减速后停止转动
         this.autoplay = false
         this.stopUserIndex = null
@@ -196,25 +199,24 @@ export default {
 </script>
 
 <style scoped>
-.page-container {
-  width: 100%;
-  height: calc(100vh);
-  background: url("../../assets/img/bg1.jpg") no-repeat top left / 100% 100%;
-}
-
-.el-carousel__item h3 {
-  margin: 0;
-  line-height: 100px;
-  color: #475669;
-  font-size: 14px;
-  opacity: 0.75;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n+1) {
-  background-color: #d3dce6;
-}
+  .page-container {
+    width: 100%;
+    height: calc(100vh);
+    background: url("../../assets/img/bg1.jpg") no-repeat top left / 100% 100%;
+  }
+  .el-carousel__item {
+    opacity: 0.6;
+    background-color: #000000;
+  }
+  .el-carousel__item .prize {
+    margin: 0;
+    height: 100px;
+    line-height: 100px;
+    color: #FFE9AF;
+    font-size: 66px;
+  }
+  .el-carousel__item image {
+    margin: 0;
+    line-height: 500px;
+  }
 </style>
