@@ -3,10 +3,14 @@
     <!--奖品区-->
     <el-row style="text-align: center; padding-top: 20px">
       <el-col :span="2">
-        <el-button type="warning" size="small" icon="el-icon-menu" @click="toHome" />
-        <el-button type="danger" size="small" icon="el-icon-refresh-left" @click="reset" />
+        <el-row>
+          <el-button type="warning" size="small" icon="el-icon-menu" @click="toHome" />
+        </el-row>
+        <el-row style="margin-top: 10px">
+          <el-button type="danger" size="small" icon="el-icon-refresh-left" @click="toReset" />
+        </el-row>
       </el-col>
-      <el-col :span="4" :offset="8">
+      <el-col :span="8" :offset="6">
         <el-carousel
           trigger="click"
           indicator-position="none"
@@ -59,7 +63,7 @@
 </template>
 
 <script>
-import { selectPrize, selectStock, selectUser, reset } from '@/api/lottery'
+import { selectPrize, selectStock, selectUser, startOne, resetAll } from '@/api/lottery'
 
 export default {
   name: 'Home',
@@ -73,7 +77,6 @@ export default {
       type: '单抽',
       autoplay: false,
       interval: 1000,
-      stopStep: 5,
       stopUserIndex: null,
       prizeUserIndex: null
     }
@@ -86,8 +89,8 @@ export default {
     toHome() {
       this.$router.push('/prize')
     },
-    reset() {
-      reset(this.currentPrize.id).then(res => {
+    toReset() {
+      resetAll().then(res => {
         this.$message.success(res.message || '重置成功')
       })
     },
@@ -144,28 +147,28 @@ export default {
       if (!prizeId) {
         return
       }
-      this.showLoading = true
-      this.prizeUserIndex = 19
-      if (this.prizeUserIndex > this.stopStep) {
-        this.stopUserIndex = this.prizeUserIndex - this.stopStep
-      } else {
-        this.stopUserIndex = this.noPrizeUser.length - this.stopStep + this.prizeUserIndex
+      if (this.type === '单抽') {
+        startOne(prizeId).then(res => {
+          // 返回中奖人员
+          const user = res.data
+          // 查找中奖人员
+          this.prizeUserIndex = this.noPrizeUser.indexOf(user)
+          this.showLoading = true
+          this.prizeUserIndex = 19
+          if (this.prizeUserIndex > 5) {
+            this.stopUserIndex = this.prizeUserIndex - 5
+          } else {
+            this.stopUserIndex = this.noPrizeUser.length - 5 + this.prizeUserIndex
+          }
+          // 速度调慢
+          setInterval(() => {
+            this.interval = this.interval + 100
+          }, 1000)
+        })
       }
-      // if (this.type === '单抽') {
-      //   startOne(prizeId).then(res => {
-      //     // 返回中奖人员
-      //     const user = res.data
-      //     // 查找中奖人员
-      //     this.prizeUserIndex = this.noPrizeUser.indexOf(user)
-      //     // 速度调慢
-      //     setInterval(() => {
-      //       this.interval = this.interval + 100
-      //     }, 1000)
-      //   })
-      // }
     },
     slowRun() {
-      // 1000 < stopStep * 200 + 300
+      // 1000 < 5 * 200 + 300
       if (this.interval <= 1000) {
         this.autoplay = false
         this.interval = this.interval + 200

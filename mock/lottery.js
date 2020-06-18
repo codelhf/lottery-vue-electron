@@ -64,16 +64,16 @@ export default [
         return fail('请邀请更多参与者')
       }
       // 生成和没有中奖的人数量相同的随机数,list下标从零开始--Random从零开始
-      const num = Math.random() * noPrizeUser.length
+      const num = Math.floor(Math.random() * noPrizeUser.length)
       const prizeUser = noPrizeUser[num]
       prizeUser.prizeId = prize.id
       prize.stock = prize.stock - 1
-      const resultUser = request.read().get('users').updateById(prizeUser.id, prizeUser)
+      const resultUser = request.read().get('users').updateById(prizeUser.id, prizeUser).write()
       if (!resultUser) {
         return fail('保存中奖用户失败')
       }
       // 更新数据
-      const resultPrize = request.read().get('prizes').updateById(prize.id, prize)
+      const resultPrize = request.read().get('prizes').updateById(prize.id, prize).write()
       if (!resultPrize) {
         return fail('修改奖品数量失败')
       }
@@ -103,7 +103,7 @@ export default [
       const prizeUserList = []
       for (let i = 0, iLength = prize.stock; i < iLength; i++) {
         // 生成总人数之间的随机数,list下标从零开始--Random从零开始
-        const num = Math.random() * noPrizeUser.length
+        const num = Math.floor(Math.random() * noPrizeUser.length)
         const prizeUser = noPrizeUser[num]
         if (!prizeUserList.includes(prizeUser)) {
           prizeUser.prizeId = prize.id
@@ -115,7 +115,7 @@ export default [
       }
       // 更新数据
       prize.stock = 0
-      const resultPrize = request.read().get('prizes').updateById(prize.id, prize)
+      const resultPrize = request.read().get('prizes').updateById(prize.id, prize).write()
       if (!resultPrize) {
         return fail('修改奖品数量失败')
       }
@@ -145,9 +145,19 @@ export default [
           item.stock = item.resetStock
         })
       }
-      const result = request.read().set('prizes', prizeList).write()
-      if (!result) {
+      const resultPrize = request.read().set('prizes', prizeList).write()
+      if (!resultPrize) {
         return fail('reset prize fail')
+      }
+      const userList = request.read().get('users').value()
+      if (userList) {
+        userList.map(item => {
+          item.prizeId = null
+        })
+      }
+      const resultUser = request.read().set('users', userList).write()
+      if (!resultUser) {
+        return fail('reset user fail')
       }
       return success('reset prize success')
     }
