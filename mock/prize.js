@@ -39,6 +39,7 @@ export default [
       if (result) {
         return fail('repeat user')
       }
+      formData.resetStock = formData.stock
       formData.operateTime = new Date().getTime()
       result = request.read().get('prizes').insert(formData).write()
       if (!result) {
@@ -57,6 +58,7 @@ export default [
       if (result && result.id !== formData.id) {
         return fail('repeat user')
       }
+      formData.resetStock = formData.stock
       formData.operateTime = new Date().getTime()
       result = request.read().get('prizes').updateById(formData.id, formData).write()
       if (!result) {

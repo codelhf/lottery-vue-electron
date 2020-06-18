@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="home-container">
     <!--奖品区-->
     <el-row style="text-align: center; padding-top: 20px">
       <el-col :span="2">
@@ -12,6 +12,7 @@
       </el-col>
       <el-col :span="8" :offset="6">
         <el-carousel
+          class="carousel-prize"
           trigger="click"
           indicator-position="none"
           height="100px"
@@ -28,9 +29,10 @@
     <el-row style="text-align: center; padding-top: 20px">
       <el-col :span="12" :offset="6">
         <el-carousel
+          class="carousel-user"
           direction="vertical"
           indicator-position="none"
-          height="440px"
+          :height="(screenHeight * 0.55) + 'px'"
           :autoplay="autoplay"
           :interval="interval"
           @change="changeCurrentUser"
@@ -78,12 +80,16 @@ export default {
       autoplay: false,
       interval: 1000,
       stopUserIndex: null,
-      prizeUserIndex: null
+      prizeUserIndex: null,
+      screenHeight: window.innerHeight
     }
   },
-  created() {
+  mounted() {
     this.getAllPrize()
     this.getNoPrizeUser()
+    window.onresize = () => {
+      this.screenHeight = window.innerHeight
+    }
   },
   methods: {
     toHome() {
@@ -151,14 +157,13 @@ export default {
         startOne(prizeId).then(res => {
           // 返回中奖人员
           const user = res.data
-          // 查找中奖人员
-          this.prizeUserIndex = this.noPrizeUser.indexOf(user)
           this.showLoading = true
-          this.prizeUserIndex = 19
+          // 查找中奖人员
+          this.prizeUserIndex = this.noPrizeUser.map(item => item.id).indexOf(user.id)
           if (this.prizeUserIndex > 5) {
             this.stopUserIndex = this.prizeUserIndex - 5
           } else {
-            this.stopUserIndex = this.noPrizeUser.length - 5 + this.prizeUserIndex
+            this.stopUserIndex = (this.noPrizeUser.length - 5) + this.prizeUserIndex
           }
           // 速度调慢
           setInterval(() => {
@@ -201,24 +206,25 @@ export default {
 }
 </script>
 
-<style scoped>
-  .page-container {
+<style>
+  .home-container {
     width: 100%;
     height: calc(100vh);
     background: url("../../assets/img/bg1.jpg") no-repeat top left / 100% 100%;
   }
-  .el-carousel__item {
-    opacity: 0.6;
-    background-color: #000000;
-  }
-  .el-carousel__item .prize {
+  .carousel-prize .prize {
     margin: 0;
     height: 100px;
     line-height: 100px;
     color: #FFE9AF;
     font-size: 66px;
   }
-  .el-carousel__item image {
+  .carousel-user .el-carousel__container {
+    opacity: 0.6;
+    background-color: #000000;
+    border-radius: 8px;
+  }
+  .carousel-user .el-carousel__container .user {
     margin: 0;
     line-height: 500px;
   }
