@@ -1,17 +1,17 @@
 <template>
-  <el-row class="user-item">
+  <el-row class="user-item" :style="userItemStyle">
     <el-col class="user-item-left">
       <img v-if="index % 2 === 0" class="user-item-img" :src="user.avatar" alt="" />
       <div v-else class="user-item-div">
-        <span class="username">{{ user.username }}</span>
-        <span class="description">{{ user.description }}</span>
+        <span class="username" :style="usernameStyle">{{ user.username }}</span>
+        <span class="description" :style="descriptionStyle">{{ user.description }}</span>
       </div>
     </el-col>
     <el-col class="user-item-right">
       <img v-if="index % 2 !== 0" class="user-item-img" :src="user.avatar" alt="" />
       <div v-else class="user-item-div">
-        <span class="username">{{ user.username }}</span>
-        <span class="description">{{ user.description }}</span>
+        <span class="username" :style="usernameStyle">{{ user.username }}</span>
+        <span class="description" :style="descriptionStyle">{{ user.description }}</span>
       </div>
     </el-col>
   </el-row>
@@ -21,16 +21,24 @@
 export default {
   name: 'UserItem',
   props: {
-    style: {
-      type: String,
-      required: true
-    },
     user: {
       type: Object,
       required: true
     },
     index: {
       type: Number,
+      required: true
+    },
+    userItemStyle: {
+      type: String,
+      required: true
+    },
+    usernameStyle: {
+      type: String,
+      required: true
+    },
+    descriptionStyle: {
+      type: String,
       required: true
     }
   }
@@ -40,6 +48,7 @@ export default {
 <style scoped>
   .user-item {
     padding: 4px;
+    float: left;
   }
   .user-item .user-item-left,
   .user-item .user-item-right {
@@ -73,12 +82,10 @@ export default {
   }
   .user-item .user-item-div .username {
     padding-top: 25%;
-    font-size: 36px;
     font-weight: bold;
     color: #ffffff;
   }
   .user-item .user-item-div .description {
-    font-size: 18px;
     font-weight: bold;
     color: #eeeeee;
   }

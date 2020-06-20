@@ -43,7 +43,6 @@
           </el-carousel-item>
         </el-carousel>
       </el-col>
-      <audio id="playAction" autoplay="autoplay" loop="loop" src="" />
     </el-row>
     <!--操控区-->
     <el-row style="text-align: center; padding-top: 30px">
@@ -66,7 +65,7 @@
 </template>
 
 <script>
-import { selectPrize, selectStock, selectUser, startOne, resetAll } from '@/api/lottery'
+import { selectPrize, selectStock, selectUser, startOne, startAll, resetAll } from '@/api/lottery'
 import MultiUser from './multi-user'
 
 export default {
@@ -137,6 +136,7 @@ export default {
         // 校验未中奖人员
         selectUser().then(res => {
           this.noPrizeUser = res.data
+          // 先清空数据
           this.stopUserIndex = null
           this.prizeUserIndex = null
           this.showMultiple = false
@@ -162,13 +162,26 @@ export default {
         return
       }
       if (this.type === '单抽') {
-        this.prizeUser = []
         startOne(prizeId).then(res => {
           // 返回中奖人员
           const user = res.data
           this.showLoading = true
+          this.prizeUser = [user]
           // 查找中奖人员
-          this.prizeUser.push(user)
+          this.prizeUserIndex = this.noPrizeUser.map(item => item.id).indexOf(user.id)
+          if (this.prizeUserIndex > 5) {
+            this.stopUserIndex = this.prizeUserIndex - 5
+          } else {
+            this.stopUserIndex = (this.noPrizeUser.length - 5) + this.prizeUserIndex
+          }
+        })
+      } else if (this.type === '全抽') {
+        startAll(prizeId).then(res => {
+          // 返回第一个中奖人员
+          const user = res.data[0]
+          this.showLoading = true
+          this.prizeUser = res.data
+          // 查找第一个中奖人员
           this.prizeUserIndex = this.noPrizeUser.map(item => item.id).indexOf(user.id)
           if (this.prizeUserIndex > 5) {
             this.stopUserIndex = this.prizeUserIndex - 5

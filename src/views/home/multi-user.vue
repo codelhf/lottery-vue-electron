@@ -1,7 +1,14 @@
 <template>
   <div class="multi-user">
     <template v-for="item in prizeUser">
-      <user-item :key="item.id" :style="style" :user="item" :index="userIndex" />
+      <user-item
+        :key="item.id"
+        :user="item"
+        :index="userIndex"
+        :user-item-style="userItemStyle"
+        :username-style="usernameStyle"
+        :description-style="descriptionStyle"
+      />
     </template>
   </div>
 </template>
@@ -25,36 +32,66 @@ export default {
   },
   data() {
     return {
-      style: ''
+      userItemStyle: '',
+      usernameStyle: '',
+      descriptionStyle: ''
     }
   },
-  mounted() {
+  updated() {
+    console.log(this.prizeUser.length)
     if (this.prizeUser.length === 1) {
-      this.style = 'width: 100%; height: 100%'
+      this.userItemStyle = 'width: 100%; height: 100%'
+      this.usernameStyle = 'font-size: 36px;'
+      this.descriptionStyle = 'font-size: 18px;'
     } else if (this.prizeUser.length === 2) {
-      this.style = 'width: 50%; height: 50%'
+      this.userItemStyle = 'width: 50%; height: 50%'
+      this.usernameStyle = 'font-size: 18px;'
+      this.descriptionStyle = 'font-size: 9px;'
     } else if (this.prizeUser.length === 3) {
-      this.style = 'width: 33.33%; height: 33.33%'
+      this.userItemStyle = 'width: 33.33%; height: 33.33%'
+      this.usernameStyle = 'font-size: 12px;'
+      this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length === 4) {
-      this.style = 'width: 50%; height: 50%'
+      this.userItemStyle = 'width: 50%; height: 50%'
+      this.usernameStyle = 'font-size: 18px;'
+      this.descriptionStyle = 'font-size: 9px;'
     } else if (this.prizeUser.length === 5) {
-      this.style = 'width: 33.33%; height: 33.33%'
+      this.userItemStyle = 'width: 33.33%; height: 33.33%'
+      this.usernameStyle = 'font-size: 12px;'
+      this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length === 6) {
-      this.style = 'width: 33.33%; height: 33.33%'
+      this.userItemStyle = 'width: 33.33%; height: 33.33%'
+      this.usernameStyle = 'font-size: 12px;'
+      this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length === 7) {
-      this.style = 'width: 25%; height: 25%'
+      this.userItemStyle = 'width: 25%; height: 25%'
+      this.usernameStyle = 'font-size: 9px;'
+      this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length === 8) {
-      this.style = 'width: 25%; height: 25%'
+      this.userItemStyle = 'width: 25%; height: 25%'
+      this.usernameStyle = 'font-size: 9px;'
+      this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length === 9) {
-      this.style = 'width: 33.33%; height: 33.33%'
+      this.userItemStyle = 'width: 33.33%; height: 33.33%'
+      this.usernameStyle = 'font-size: 12px;'
+      this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length === 10) {
-      this.style = 'width: 25%; height: 25%'
+      console.log(this.prizeUser.length)
+      this.userItemStyle = 'width: 25%; height: 25%'
+      this.usernameStyle = 'font-size: 9px;'
+      this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length === 11) {
-      this.style = 'width: 25%; height: 25%'
+      this.userItemStyle = 'width: 25%; height: 25%'
+      this.usernameStyle = 'font-size: 9px;'
+      this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length === 12) {
-      this.style = 'width: 25%; height: 25%'
+      this.userItemStyle = 'width: 25%; height: 25%'
+      this.usernameStyle = 'font-size: 9px;'
+      this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length > 12) {
-      this.style = 'width: 25%; height: 25%'
+      this.userItemStyle = 'width: 25%; height: 25%'
+      this.usernameStyle = 'font-size: 9px;'
+      this.descriptionStyle = 'font-size: 6px;'
     }
   }
 }
@@ -63,5 +100,6 @@ export default {
 <style scoped>
   .multi-user {
     height: 100%;
+    overflow: hidden;
   }
 </style>
