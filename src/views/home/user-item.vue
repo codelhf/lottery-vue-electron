@@ -1,14 +1,14 @@
 <template>
   <el-row class="user-item" :style="userItemStyle">
     <el-col class="user-item-left">
-      <img v-if="index % 2 === 0" class="user-item-img" :src="user.avatar" alt="" />
+      <img v-if="index % 2 === 0" class="user-item-img" :src="user.avatar" alt="">
       <div v-else class="user-item-div">
         <span class="username" :style="usernameStyle">{{ user.username }}</span>
         <span class="description" :style="descriptionStyle">{{ user.description }}</span>
       </div>
     </el-col>
     <el-col class="user-item-right">
-      <img v-if="index % 2 !== 0" class="user-item-img" :src="user.avatar" alt="" />
+      <img v-if="index % 2 !== 0" class="user-item-img" :src="user.avatar" alt="">
       <div v-else class="user-item-div">
         <span class="username" :style="usernameStyle">{{ user.username }}</span>
         <span class="description" :style="descriptionStyle">{{ user.description }}</span>
@@ -47,8 +47,8 @@ export default {
 
 <style scoped>
   .user-item {
-    padding: 4px;
     float: left;
+    padding: 4px;
   }
   .user-item .user-item-left,
   .user-item .user-item-right {

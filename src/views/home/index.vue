@@ -4,7 +4,7 @@
     <el-row style="text-align: center; padding-top: 30px">
       <el-col :span="2">
         <el-row>
-          <el-button type="warning" size="small" icon="el-icon-menu" @click="toHome" />
+          <el-button type="warning" size="small" icon="el-icon-menu" @click="toPrize" />
         </el-row>
         <el-row style="margin-top: 10px">
           <el-button type="danger" size="small" icon="el-icon-refresh-left" @click="toReset" />
@@ -37,7 +37,7 @@
           :interval="interval"
           @change="changeCurrentUser"
         >
-          <el-carousel-item v-for="(item, index) in noPrizeUser" :key="item.id">
+          <el-carousel-item v-for="(item, index) in noPrizeUser" :key="index">
             <multi-user v-if="showMultiple" :prize-user="prizeUser" />
             <multi-user v-else :prize-user="[item]" :user-index="index" />
           </el-carousel-item>
@@ -98,7 +98,7 @@ export default {
     }
   },
   methods: {
-    toHome() {
+    toPrize() {
       this.$router.push('/prize')
     },
     toReset() {

@@ -32,13 +32,12 @@ export default {
   },
   data() {
     return {
-      userItemStyle: '',
-      usernameStyle: '',
-      descriptionStyle: ''
+      userItemStyle: 'width: 100%; height: 100%',
+      usernameStyle: 'font-size: 36px;',
+      descriptionStyle: 'font-size: 18px;'
     }
   },
   updated() {
-    console.log(this.prizeUser.length)
     if (this.prizeUser.length === 1) {
       this.userItemStyle = 'width: 100%; height: 100%'
       this.usernameStyle = 'font-size: 36px;'
@@ -76,7 +75,6 @@ export default {
       this.usernameStyle = 'font-size: 12px;'
       this.descriptionStyle = 'font-size: 6px;'
     } else if (this.prizeUser.length === 10) {
-      console.log(this.prizeUser.length)
       this.userItemStyle = 'width: 25%; height: 25%'
       this.usernameStyle = 'font-size: 9px;'
       this.descriptionStyle = 'font-size: 6px;'
