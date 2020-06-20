@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <!--奖品区-->
-    <el-row style="text-align: center; padding-top: 20px">
+    <el-row style="text-align: center; padding-top: 30px">
       <el-col :span="2">
         <el-row>
           <el-button type="warning" size="small" icon="el-icon-menu" @click="toHome" />
@@ -26,7 +26,7 @@
       </el-col>
     </el-row>
     <!--转动区-->
-    <el-row style="text-align: center; padding-top: 20px">
+    <el-row style="text-align: center; padding-top: 30px">
       <el-col :span="12" :offset="6">
         <el-carousel
           class="carousel-user"
@@ -37,15 +37,16 @@
           :interval="interval"
           @change="changeCurrentUser"
         >
-          <el-carousel-item v-for="item in noPrizeUser" :key="item.id">
-            <h3>{{ item.username }}</h3>
+          <el-carousel-item v-for="(item, index) in noPrizeUser" :key="item.id">
+            <multi-user v-if="showMultiple" :prize-user="prizeUser" />
+            <multi-user v-else :prize-user="[item]" :user-index="index" />
           </el-carousel-item>
         </el-carousel>
       </el-col>
-      <audio id="playAction" autoplay="autoplay" loop="loop" src=""></audio>
+      <audio id="playAction" autoplay="autoplay" loop="loop" src="" />
     </el-row>
     <!--操控区-->
-    <el-row style="text-align: center; padding-top: 10px">
+    <el-row style="text-align: center; padding-top: 30px">
       <el-row>
         <el-col :span="4" :offset="10">
           <div style="margin-top: 10px">
@@ -66,17 +67,23 @@
 
 <script>
 import { selectPrize, selectStock, selectUser, startOne, resetAll } from '@/api/lottery'
+import MultiUser from './multi-user'
 
 export default {
   name: 'Home',
+  components: {
+    MultiUser
+  },
   data() {
     return {
       allPrize: [],
       currentPrize: [],
+      prizeUser: [],
       noPrizeUser: [],
       showButton: true,
       showLoading: false,
       type: '单抽',
+      showMultiple: false,
       autoplay: false,
       interval: 1000,
       stopUserIndex: null,
@@ -132,6 +139,7 @@ export default {
           this.noPrizeUser = res.data
           this.stopUserIndex = null
           this.prizeUserIndex = null
+          this.showMultiple = false
           // 转动跑马灯
           this.autoplay = true
           this.interval = 300
@@ -154,21 +162,19 @@ export default {
         return
       }
       if (this.type === '单抽') {
+        this.prizeUser = []
         startOne(prizeId).then(res => {
           // 返回中奖人员
           const user = res.data
           this.showLoading = true
           // 查找中奖人员
+          this.prizeUser.push(user)
           this.prizeUserIndex = this.noPrizeUser.map(item => item.id).indexOf(user.id)
           if (this.prizeUserIndex > 5) {
             this.stopUserIndex = this.prizeUserIndex - 5
           } else {
             this.stopUserIndex = (this.noPrizeUser.length - 5) + this.prizeUserIndex
           }
-          // 速度调慢
-          setInterval(() => {
-            this.interval = this.interval + 100
-          }, 1000)
         })
       }
     },
@@ -194,6 +200,7 @@ export default {
       if (index === this.prizeUserIndex && this.interval > 1000) {
         // 减速后停止转动
         this.autoplay = false
+        this.showMultiple = true
         this.stopUserIndex = null
         this.prizeUserIndex = null
         setTimeout(() => {
@@ -220,12 +227,8 @@ export default {
     font-size: 66px;
   }
   .carousel-user .el-carousel__container {
-    opacity: 0.6;
     background-color: #000000;
+    opacity: 0.6;
     border-radius: 8px;
-  }
-  .carousel-user .el-carousel__container .user {
-    margin: 0;
-    line-height: 500px;
   }
 </style>
