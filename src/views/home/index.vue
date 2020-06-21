@@ -17,7 +17,7 @@
           indicator-position="none"
           height="100px"
           :autoplay="false"
-          @change="changeCurrentPrize"
+          @change="currentPrize"
         >
           <el-carousel-item v-for="item in allPrize" :key="item.id">
             <h3 class="prize">{{ item.name }}</h3>
@@ -27,6 +27,7 @@
     </el-row>
     <!--转动区-->
     <el-row style="text-align: center; padding-top: 30px">
+      <audio v-if="musicPlay" :src="musicUrl" autoplay="autoplay" loop="loop" />
       <el-col :span="12" :offset="6">
         <el-carousel
           class="carousel-user"
@@ -35,7 +36,7 @@
           :height="(screenHeight * 0.55) + 'px'"
           :autoplay="autoplay"
           :interval="interval"
-          @change="changeCurrentUser"
+          @change="currentUser"
         >
           <el-carousel-item v-for="(item, index) in noPrizeUser" :key="index">
             <multi-user v-if="showMultiple" :prize-user="prizeUser" />
@@ -67,6 +68,8 @@
 <script>
 import { selectPrize, selectStock, selectUser, startOne, startAll, resetAll } from '@/api/lottery'
 import MultiUser from './multi-user'
+import action from '../../assets/media/action.mp3'
+import jump from '../../assets/media/jump.mp3'
 
 export default {
   name: 'Home',
@@ -76,17 +79,20 @@ export default {
   data() {
     return {
       allPrize: [],
-      currentPrize: [],
-      prizeUser: [],
+      curPrize: [],
       noPrizeUser: [],
+      prizeUser: [],
       showButton: true,
       showLoading: false,
-      type: '单抽',
-      showMultiple: false,
       autoplay: false,
       interval: 1000,
+      type: '单抽',
+      showMultiple: false,
       stopUserIndex: null,
       prizeUserIndex: null,
+      // 背景音乐
+      musicUrl: null,
+      musicPlay: false,
       screenHeight: window.innerHeight
     }
   },
@@ -113,12 +119,12 @@ export default {
         this.allPrize.sort((a, b) => {
           return b.number - a.number
         })
-        this.currentPrize = this.allPrize[0]
+        this.curPrize = this.allPrize[0]
       })
     },
-    changeCurrentPrize(index) {
-      this.currentPrize = this.allPrize[index]
-      console.log(this.currentPrize.name)
+    currentPrize(index) {
+      this.curPrize = this.allPrize[index]
+      console.log(this.curPrize.name)
     },
     getNoPrizeUser() {
       selectUser().then(res => {
@@ -127,12 +133,15 @@ export default {
     },
     startRun() {
       // 校验奖品
-      const prizeId = this.currentPrize.id
+      const prizeId = this.curPrize.id
       if (!prizeId) {
         return
       }
       // 校验库存
       selectStock(prizeId).then(res => {
+        if (res.data <= 0) {
+          return
+        }
         // 校验未中奖人员
         selectUser().then(res => {
           this.noPrizeUser = res.data
@@ -140,6 +149,9 @@ export default {
           this.stopUserIndex = null
           this.prizeUserIndex = null
           this.showMultiple = false
+          // 背景音乐
+          this.musicPlay = true
+          this.musicUrl = action
           // 转动跑马灯
           this.autoplay = true
           this.interval = 300
@@ -157,7 +169,7 @@ export default {
     },
     stopRun() {
       // 校验奖品
-      const prizeId = this.currentPrize.id
+      const prizeId = this.curPrize.id
       if (!prizeId) {
         return
       }
@@ -166,6 +178,7 @@ export default {
           // 返回中奖人员
           const user = res.data
           this.showLoading = true
+          // 展示中奖人员
           this.prizeUser = [user]
           // 查找中奖人员
           this.prizeUserIndex = this.noPrizeUser.map(item => item.id).indexOf(user.id)
@@ -180,6 +193,7 @@ export default {
           // 返回第一个中奖人员
           const user = res.data[0]
           this.showLoading = true
+          // 展示中奖人员
           this.prizeUser = res.data
           // 查找第一个中奖人员
           this.prizeUserIndex = this.noPrizeUser.map(item => item.id).indexOf(user.id)
@@ -202,13 +216,15 @@ export default {
         }, 100)
       }
     },
-    changeCurrentUser(index) {
+    currentUser(index) {
       this.currentTime = new Date().getTime()
       console.log(index, this.prizeUserIndex, this.stopUserIndex, this.interval, this.currentTime - this.lastTime)
       this.lastTime = this.currentTime
       if (index === this.stopUserIndex) {
         // 开始减速
         this.slowRun()
+        // 更换背景音乐
+        this.musicUrl = jump
       }
       if (index === this.prizeUserIndex && this.interval > 1000) {
         // 减速后停止转动
@@ -220,6 +236,8 @@ export default {
           this.showButton = true
           this.showLoading = false
         }, 1.5 * 1000)
+        // 停止背景音乐
+        this.musicPlay = false
       }
     }
   }
