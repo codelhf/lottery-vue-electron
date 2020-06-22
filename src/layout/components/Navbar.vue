@@ -11,9 +11,12 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <a target="_blank" href="/">
-            <el-dropdown-item>Home</el-dropdown-item>
-          </a>
+          <el-dropdown-item divided>
+            <span style="display:block;" @click="handleSetLanguage('zh')">中文</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
+            <span style="display:block;" @click="handleSetLanguage('en')">English</span>
+          </el-dropdown-item>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">登出</span>
           </el-dropdown-item>
@@ -46,6 +49,14 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    handleSetLanguage(language) {
+      this.$i18n.locale = language
+      this.$store.dispatch('app/setLanguage', language)
+      this.$message({
+        message: 'Switch Language Success',
+        type: 'success'
+      })
     }
   }
 }

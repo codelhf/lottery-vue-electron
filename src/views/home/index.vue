@@ -149,12 +149,12 @@ export default {
           this.stopUserIndex = null
           this.prizeUserIndex = null
           this.showMultiple = false
-          // 背景音乐
-          this.musicPlay = true
-          this.musicUrl = action
           // 转动跑马灯
           this.autoplay = true
           this.interval = 300
+          // 播放背景音乐
+          this.musicPlay = true
+          this.musicUrl = action
           this.showLoading = true
           setTimeout(() => {
             this.showButton = false
@@ -232,12 +232,12 @@ export default {
         this.showMultiple = true
         this.stopUserIndex = null
         this.prizeUserIndex = null
+        // 停止背景音乐
+        this.musicPlay = false
         setTimeout(() => {
           this.showButton = true
           this.showLoading = false
         }, 1.5 * 1000)
-        // 停止背景音乐
-        this.musicPlay = false
       }
     }
   }
