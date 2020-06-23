@@ -27,9 +27,7 @@
     >
       <el-table-column :label="$t('prize.table.prizeImage')" align="center">
         <template slot-scope="scope">
-          <div class="table-column-image">
-            <img v-if="scope.row.image" :src="scope.row.image" alt="">
-          </div>
+          <table-image :src="scope.row.image" />
         </template>
       </el-table-column>
       <el-table-column :label="$t('prize.table.prizeName')" align="center">
@@ -100,6 +98,7 @@
 <script>
 import { fetchPrizeList, fetchPrize, createPrize, updatePrize, deletePrize } from '@/api/prize'
 import Pagination from '@/components/Pagination'
+import TableImage from '@/components/TableImage'
 import UploadImage from '@/components/Upload'
 import { parseTime } from '@/utils'
 
@@ -107,6 +106,7 @@ export default {
   name: 'Prize',
   components: {
     Pagination,
+    TableImage,
     UploadImage
   },
   data() {
@@ -176,9 +176,12 @@ export default {
     },
     handleDetail(id) {
       this.dialogFormVisible = true
-      this.prize = {}
+      this.prize = { image: '' }
       if (id) {
         fetchPrize(id).then(res => {
+          if (!res.data.image) {
+            res.data.image = ''
+          }
           this.prize = res.data
         })
       }
@@ -217,15 +220,5 @@ export default {
 </script>
 
 <style scoped>
-  .table-column-image{
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-    border: 1px solid #eeeeee;
-    border-radius: 4px;
-  }
-  .table-column-image img{
-    width: 100%;
-    height: 100%;
-  }
+
 </style>

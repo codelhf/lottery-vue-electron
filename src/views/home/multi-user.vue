@@ -98,6 +98,6 @@ export default {
 <style scoped>
   .multi-user {
     height: 100%;
-    overflow: hidden;
+    overflow-y: auto;
   }
 </style>

@@ -25,7 +25,8 @@
           @change="currentPrize"
         >
           <el-carousel-item v-for="item in allPrize" :key="item.id">
-            <h3 class="prize">{{ item.name }}</h3>
+            <img v-if="item.image" class="prize-image" :src="item.image" alt="">
+            <h3 v-else class="prize-name">{{ item.name }}</h3>
           </el-carousel-item>
         </el-carousel>
       </el-col>
@@ -256,7 +257,15 @@ export default {
     height: calc(100vh);
     background: url("../../assets/img/bg1.jpg") no-repeat top left / 100% 100%;
   }
-  .carousel-prize .prize {
+  .carousel-prize .prize-image {
+    display: inline-block;
+    margin: 0;
+    width: 160px;
+    height: 100px;
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+  }
+  .carousel-prize .prize-name {
     margin: 0;
     height: 100px;
     line-height: 100px;

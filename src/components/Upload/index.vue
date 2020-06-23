@@ -15,6 +15,7 @@
 import path from 'path'
 import fse from 'fs-extra'
 import { imagePath } from '@/utils/init'
+
 export default {
   name: 'Upload',
   props: {
@@ -31,7 +32,7 @@ export default {
       }
       console.log('before', file)
       // 复制图片
-      const fileName = new Date().getTime() + file.name.substr(file.name.lastIndexOf('.'))
+      const fileName = new Date().getTime().toString() + file.name.substr(file.name.lastIndexOf('.'))
       const filePath = path.join(imagePath, fileName)
       fse.copySync(file.path, filePath)
       this.$emit('upload-path', 'local-resource:///' + filePath.replace(/\\/g, '/'))

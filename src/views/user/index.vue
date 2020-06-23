@@ -32,9 +32,7 @@
     >
       <el-table-column :label="$t('users.table.avatar')" align="center">
         <template slot-scope="scope">
-          <div class="table-column-image">
-            <img v-if="scope.row.avatar" :src="scope.row.avatar" alt="avatar">
-          </div>
+          <table-image :src="scope.row.avatar" />
         </template>
       </el-table-column>
       <el-table-column :label="$t('users.table.username')" align="center">
@@ -49,9 +47,7 @@
       </el-table-column>
       <el-table-column :label="$t('users.table.prizeImage')" align="center">
         <template slot-scope="scope">
-          <div class="table-column-image">
-            <img v-if="scope.row.prizeImage" :src="scope.row.prizeImage" alt="prizeImage">
-          </div>
+          <table-image :src="scope.row.prizeImage" />
         </template>
       </el-table-column>
       <el-table-column :label="$t('users.table.prizeName')" align="center">
@@ -101,6 +97,7 @@
 import { fetchUserList, fetchUser, createUser, updateUser, deleteUser } from '@/api/users'
 import { fetchPrizeList } from '@/api/prize'
 import Pagination from '@/components/Pagination'
+import TableImage from '@/components/TableImage'
 import UploadImage from '@/components/Upload'
 import { parseTime } from '@/utils'
 
@@ -108,6 +105,7 @@ export default {
   name: 'Prize',
   components: {
     Pagination,
+    TableImage,
     UploadImage
   },
   data() {
@@ -187,9 +185,12 @@ export default {
     },
     handleDetail(id) {
       this.dialogFormVisible = true
-      this.user = {}
+      this.user = { avatar: '' }
       if (id) {
         fetchUser(id).then(res => {
+          if (!res.data.avatar) {
+            res.data.avatar = ''
+          }
           this.user = res.data
         })
       }
@@ -228,15 +229,5 @@ export default {
 </script>
 
 <style scoped>
-  .table-column-image{
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-    border: 1px solid #eeeeee;
-    border-radius: 4px;
-  }
-  .table-column-image img{
-    width: 100%;
-    height: 100%;
-  }
+
 </style>

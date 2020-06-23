@@ -1,14 +1,14 @@
 <template>
   <el-row class="user-item" :style="userItemStyle">
     <el-col class="user-item-left">
-      <img v-if="index % 2 === 0" class="user-item-img" :src="user.avatar" alt="">
+      <img v-if="index % 2 === 0" class="user-item-img" :src="user.avatar ? user.avatar : nullImage" alt="">
       <div v-else class="user-item-div">
         <span class="username" :style="usernameStyle">{{ user.username }}</span>
         <span class="description" :style="descriptionStyle">{{ user.description }}</span>
       </div>
     </el-col>
     <el-col class="user-item-right">
-      <img v-if="index % 2 !== 0" class="user-item-img" :src="user.avatar" alt="">
+      <img v-if="index % 2 !== 0" class="user-item-img" :src="user.avatar ? user.avatar : nullImage" alt="">
       <div v-else class="user-item-div">
         <span class="username" :style="usernameStyle">{{ user.username }}</span>
         <span class="description" :style="descriptionStyle">{{ user.description }}</span>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import nullImage from '@/assets/img/null.jpg'
+
 export default {
   name: 'UserItem',
   props: {
@@ -40,6 +42,11 @@ export default {
     descriptionStyle: {
       type: String,
       required: true
+    }
+  },
+  data() {
+    return {
+      nullImage
     }
   }
 }
