@@ -5,20 +5,19 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
+      <lang-select class="right-menu-item hover-effect" />
+
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar" alt="">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
+          <a target="_blank" href="https://github.com/codelhf/lottery-vue-electron">
+            <el-dropdown-item>{{ $t('navbar.github') }}</el-dropdown-item>
+          </a>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="handleSetLanguage('zh')">中文</span>
-          </el-dropdown-item>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="handleSetLanguage('en')">English</span>
-          </el-dropdown-item>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">登出</span>
+            <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -30,11 +29,13 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import LangSelect from '@/components/LangSelect'
 
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    LangSelect
   },
   computed: {
     ...mapGetters([
@@ -46,17 +47,9 @@ export default {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
+    logout() {
+      this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-    },
-    handleSetLanguage(language) {
-      this.$i18n.locale = language
-      this.$store.dispatch('app/setLanguage', language)
-      this.$message({
-        message: 'Switch Language Success',
-        type: 'success'
-      })
     }
   }
 }

@@ -27,13 +27,13 @@ export default {
     beforeAvatarUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
+        this.$message.error(this.$t('components.upload.error'))
       }
       console.log('before', file)
-      // 移动图片
-      const filePath = path.join(imagePath, file.name)
+      // 复制图片
+      const fileName = new Date().getTime() + file.name.substr(file.name.lastIndexOf('.'))
+      const filePath = path.join(imagePath, fileName)
       fse.copySync(file.path, filePath)
-      // this.imageUrl = 'local-resource:///' + filePath.replace(/\\/g, '/')
       this.$emit('upload-path', 'local-resource:///' + filePath.replace(/\\/g, '/'))
       return isLt2M
     }

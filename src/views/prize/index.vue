@@ -2,18 +2,18 @@
   <div class="page-container">
     <el-form :model="listQuery" :inline="true" label-width="120px" label-suffix=":">
       <el-row>
-        <el-form-item label="奖品名称">
-          <el-input v-model="listQuery.name" placeholder="请输入奖品名称" />
+        <el-form-item :label="$t('prize.listQuery.name')">
+          <el-input v-model="listQuery.name" :placeholder="$t('prize.listQuery.placeholderName')" />
         </el-form-item>
-        <el-form-item label="奖品描述">
-          <el-input v-model="listQuery.description" placeholder="请输入奖品描述" />
+        <el-form-item :label="$t('prize.listQuery.description')">
+          <el-input v-model="listQuery.description" :placeholder="$t('prize.listQuery.placeholderDescription')" />
         </el-form-item>
       </el-row>
       <el-row style="text-align: center">
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-          <el-button type="primary" icon="el-icon-refresh" @click="handleReset">重置</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="handleDetail()">增加奖品</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('prize.listButton.search') }}</el-button>
+          <el-button type="primary" icon="el-icon-refresh" @click="handleReset">{{ $t('prize.listButton.reset') }}</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="handleDetail()">{{ $t('prize.listButton.add') }}</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -25,73 +25,73 @@
       highlight-current-row
       border="border"
     >
-      <el-table-column label="奖品图片" align="center">
+      <el-table-column :label="$t('prize.table.prizeImage')" align="center">
         <template slot-scope="scope">
           <div class="table-column-image">
             <img v-if="scope.row.image" :src="scope.row.image" alt="">
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="奖品名称" align="center">
+      <el-table-column :label="$t('prize.table.prizeName')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="奖品描述" align="center">
+      <el-table-column :label="$t('prize.table.prizeDesc')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="奖品数量" align="center">
+      <el-table-column :label="$t('prize.table.prizeStock')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.stock }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="奖品顺序" align="center">
+      <el-table-column :label="$t('prize.table.prizeNumber')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.number }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="修改时间" align="center">
+      <el-table-column :label="$t('prize.table.operateTime')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.operateTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="260">
+      <el-table-column :label="$t('prize.table.operation')" fixed="right" align="center" width="260">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handlePrizeUser(scope.row.id)">中奖人员</el-button>
-          <el-button type="primary" size="mini" @click="handleDetail(scope.row.id)">详情</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
+          <el-button type="primary" size="mini" @click="handlePrizeUser(scope.row.id)">{{ $t('prize.table.prizeUsers') }}</el-button>
+          <el-button type="primary" size="mini" @click="handleDetail(scope.row.id)">{{ $t('prize.table.edit') }}</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">{{ $t('prize.table.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.currentPage" :limit.sync="listQuery.pageLimit" @pagination="getList" />
 
     <el-dialog
-      :title="prize.id ? '修改奖品' : '新增奖品'"
+      :title="prize.id ? $t('prize.item.editTitle') : $t('prize.item.addTitle')"
       :visible.sync="dialogFormVisible"
       @close="handleFormClose('prizeForm')"
     >
       <el-form ref="prizeForm" :model="prize" :rules="prizeRules" label-width="120px" label-suffix=":">
-        <el-form-item label="奖品图片" prop="image">
+        <el-form-item :label="$t('prize.item.image')" prop="image">
           <upload-image :image-url="prize.image" @upload-path="uploadFilePath" />
         </el-form-item>
-        <el-form-item label="奖品名称" prop="name">
-          <el-input v-model="prize.name" placeholder="请输入奖品名称" />
+        <el-form-item :label="$t('prize.item.name')" prop="name">
+          <el-input v-model="prize.name" :placeholder="$t('prize.item.placeholderName')" />
         </el-form-item>
-        <el-form-item label="奖品描述" prop="description">
-          <el-input v-model="prize.description" placeholder="请输入奖品描述" />
+        <el-form-item :label="$t('prize.item.description')" prop="description">
+          <el-input v-model="prize.description" :placeholder="$t('prize.item.placeholderDescription')" />
         </el-form-item>
-        <el-form-item label="奖品数量" prop="stock">
-          <el-input-number v-model="prize.stock" :min="1" placeholder="请输入奖品数量" />
+        <el-form-item :label="$t('prize.item.stock')" prop="stock">
+          <el-input-number v-model="prize.stock" :min="1" :placeholder="$t('prize.item.placeholderStock')" />
         </el-form-item>
-        <el-form-item label="奖品顺序" prop="number">
-          <el-input-number v-model="prize.number" :min="1" placeholder="请输入奖品顺序" />
+        <el-form-item :label="$t('prize.item.number')" prop="number">
+          <el-input-number v-model="prize.number" :min="1" :placeholder="$t('prize.item.placeholderNumber')" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleFormClose('prizeForm')">返回</el-button>
-        <el-button type="primary" @click="handleFormSubmit('prizeForm')">确定</el-button>
+        <el-button @click="handleFormClose('prizeForm')">{{ $t('prize.item.formCancel') }}</el-button>
+        <el-button type="primary" @click="handleFormSubmit('prizeForm')">{{ $t('prize.item.formConfirm') }}</el-button>
       </span>
     </el-dialog>
   </div>

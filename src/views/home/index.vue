@@ -7,6 +7,11 @@
           <el-button type="warning" size="small" icon="el-icon-menu" @click="toPrize" />
         </el-row>
         <el-row style="margin-top: 10px">
+          <el-button type="danger" size="small">
+            <lang-select class="set-language" style="color:#ffffff;" />
+          </el-button>
+        </el-row>
+        <el-row style="margin-top: 10px">
           <el-button type="danger" size="small" icon="el-icon-refresh-left" @click="toReset" />
         </el-row>
       </el-col>
@@ -50,13 +55,13 @@
       <el-row>
         <el-col :span="4" :offset="10">
           <div style="margin-top: 10px">
-            <el-button v-if="showButton" :loading="showLoading" type="primary" round style="width: 100%;" @click="startRun">开始</el-button>
-            <el-button v-if="!showButton" :loading="showLoading" type="primary" round style="width: 100%;" @click="stopRun">停止</el-button>
+            <el-button v-if="showButton" :loading="showLoading" type="primary" round style="width: 100%;" @click="startRun">{{ $t('home.start') }}</el-button>
+            <el-button v-if="!showButton" :loading="showLoading" type="primary" round style="width: 100%;" @click="stopRun">{{ $t('home.stop') }}</el-button>
           </div>
           <div style="margin-top: 10px">
-            <el-radio-group v-model="type" size="small">
-              <el-radio-button label="单抽" />
-              <el-radio-button label="全抽" />
+            <el-radio-group v-model="isSingle" size="small">
+              <el-radio-button :label="true">{{ $t('home.single') }}</el-radio-button>
+              <el-radio-button :label="false">{{ $t('home.multiple') }}</el-radio-button>
             </el-radio-group>
           </div>
         </el-col>
@@ -67,6 +72,7 @@
 
 <script>
 import { selectPrize, selectStock, selectUser, startOne, startAll, resetAll } from '@/api/lottery'
+import LangSelect from '@/components/LangSelect'
 import MultiUser from './multi-user'
 import action from '../../assets/media/action.mp3'
 import jump from '../../assets/media/jump.mp3'
@@ -74,6 +80,7 @@ import jump from '../../assets/media/jump.mp3'
 export default {
   name: 'Home',
   components: {
+    LangSelect,
     MultiUser
   },
   data() {
@@ -86,7 +93,7 @@ export default {
       showLoading: false,
       autoplay: false,
       interval: 1000,
-      type: '单抽',
+      isSingle: true,
       showMultiple: false,
       stopUserIndex: null,
       prizeUserIndex: null,
@@ -108,8 +115,10 @@ export default {
       this.$router.push('/prize')
     },
     toReset() {
-      resetAll().then(res => {
-        this.$message.success(res.message || '重置成功')
+      resetAll().then(() => {
+        this.$message.success(this.$t('home.resetMsg'))
+      }, error => {
+        this.$message.error(error)
       })
     },
     getAllPrize() {
@@ -138,10 +147,7 @@ export default {
         return
       }
       // 校验库存
-      selectStock(prizeId).then(res => {
-        if (res.data <= 0) {
-          return
-        }
+      selectStock(prizeId).then(() => {
         // 校验未中奖人员
         selectUser().then(res => {
           this.noPrizeUser = res.data
@@ -173,7 +179,7 @@ export default {
       if (!prizeId) {
         return
       }
-      if (this.type === '单抽') {
+      if (this.isSingle) {
         startOne(prizeId).then(res => {
           // 返回中奖人员
           const user = res.data
@@ -188,7 +194,7 @@ export default {
             this.stopUserIndex = (this.noPrizeUser.length - 5) + this.prizeUserIndex
           }
         })
-      } else if (this.type === '全抽') {
+      } else {
         startAll(prizeId).then(res => {
           // 返回第一个中奖人员
           const user = res.data[0]
