@@ -1,8 +1,8 @@
 export default {
   route: {
     dashboard: 'Dashboard',
-    prize: 'Prize',
-    users: 'Users'
+    prize: 'Prize Manage',
+    users: 'Users Manage'
   },
   navbar: {
     github: 'Github',
