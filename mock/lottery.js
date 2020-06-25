@@ -9,7 +9,7 @@ export default [
     response: config => {
       const prizeList = request.read().get('prizes').value()
       if (!prizeList || prizeList.length === 0) {
-        return fail('请添加奖品')
+        return fail('lottery.prize')
       }
       return success(prizeList)
     }
@@ -22,7 +22,7 @@ export default [
       const { prizeId } = config.query
       const prize = request.read().get('prizes').getById(prizeId).value()
       if (!prize || prize.stock === 0) {
-        return fail('该类奖品已抽完，请选择其他奖品')
+        return fail('lottery.stock')
       }
       return success(prize)
     }
@@ -39,7 +39,7 @@ export default [
         }
       })
       if (!users || users.length === 0) {
-        return fail('请邀请更多人员参与')
+        return fail('lottery.user')
       }
       return success(users)
     }
@@ -52,7 +52,7 @@ export default [
       const { prizeId } = config.query
       const prize = request.read().get('prizes').find({ id: prizeId }).value()
       if (!prize || prize.stock === '0') {
-        return fail('该类奖品已抽完，请选择其他奖品')
+        return fail('lottery.startOne.noStock')
       }
       const userList = request.read().get('users').value()
       const noPrizeUser = userList.filter(item => {
@@ -61,21 +61,22 @@ export default [
         }
       })
       if (!noPrizeUser || noPrizeUser.length === 0) {
-        return fail('请邀请更多参与者')
+        return fail('lottery.startOne.noUser')
       }
       // 生成和没有中奖的人数量相同的随机数,list下标从零开始--Random从零开始
       const num = Math.floor(Math.random() * noPrizeUser.length)
       const prizeUser = noPrizeUser[num]
-      prizeUser.prizeId = prize.id
-      prize.stock = prize.stock - 1
-      const resultUser = request.read().get('users').updateById(prizeUser.id, prizeUser).write()
-      if (!resultUser) {
-        return fail('保存中奖用户失败')
-      }
       // 更新数据
+      prize.stock = prize.stock - 1
       const resultPrize = request.read().get('prizes').updateById(prize.id, prize).write()
       if (!resultPrize) {
-        return fail('修改奖品数量失败')
+        return fail('lottery.startOne.updatePrize')
+      }
+      // 保存中奖用户
+      prizeUser.prizeId = prize.id
+      const resultUser = request.read().get('users').updateById(prizeUser.id, prizeUser).write()
+      if (!resultUser) {
+        return fail('lottery.startOne.savePrizeUser')
       }
       return success(prizeUser)
     }
@@ -88,7 +89,7 @@ export default [
       const { prizeId } = config.query
       const prize = request.read().get('prizes').find({ id: prizeId }).value()
       if (!prize || prize.stock === '0') {
-        return fail('该类奖品已抽完，请选择其他奖品')
+        return fail('lottery.startAll.noStock')
       }
       const userList = request.read().get('users').value()
       const noPrizeUser = userList.filter(item => {
@@ -97,7 +98,7 @@ export default [
         }
       })
       if (!noPrizeUser || noPrizeUser.length === 0) {
-        return fail('请邀请更多参与者')
+        return fail('lottery.startAll.noUser')
       }
       // 保存已中奖人员
       const prizeUserList = []
@@ -117,9 +118,9 @@ export default [
       prize.stock = 0
       const resultPrize = request.read().get('prizes').updateById(prize.id, prize).write()
       if (!resultPrize) {
-        return fail('修改奖品数量失败')
+        return fail('lottery.startAll.updatePrize')
       }
-      // 更新中奖用户
+      // 保存中奖用户
       userList.map(item => {
         prizeUserList.map(user => {
           if (item.id === user.id) {
@@ -129,7 +130,7 @@ export default [
       })
       const resultUser = request.read().set('users', userList).write()
       if (!resultUser) {
-        return fail('修改奖品数量失败')
+        return fail('lottery.startAll.savePrizeUser')
       }
       return success(prizeUserList)
     }
@@ -147,7 +148,7 @@ export default [
       }
       const resultPrize = request.read().set('prizes', prizeList).write()
       if (!resultPrize) {
-        return fail('reset prize fail')
+        return fail('lottery.resetAll.resetPrize')
       }
       const userList = request.read().get('users').value()
       if (userList) {
@@ -157,9 +158,9 @@ export default [
       }
       const resultUser = request.read().set('users', userList).write()
       if (!resultUser) {
-        return fail('reset user fail')
+        return fail('lottery.resetAll.resetUsers')
       }
-      return success('reset prize success')
+      return success('lottery.resetAll.success')
     }
   }
 ]

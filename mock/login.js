@@ -11,12 +11,17 @@ export default [
     url: '/user/login',
     type: 'post',
     response: config => {
-      const { username } = config.body
+      const { username, password } = config.body
       const token = tokens[username]
-
-      // mock error
+      // no username
       if (!token) {
-        return failCodeMsg(60204, 'Account and password are incorrect.')
+        return failCodeMsg(5006, 'login.noUsername')
+      }
+      // password error
+      const passwordSlat = tokens[username + 'Pwd']
+      console.log(password, passwordSlat)
+      if (password !== passwordSlat) {
+        return failCodeMsg(5006, 'login.noPassword')
       }
       return success(token)
     }
@@ -32,7 +37,7 @@ export default [
 
       // mock error
       if (!info) {
-        return fail('Login failed, unable to get user details.')
+        return fail('login.noUserInfo')
       }
       return success(info)
     }
@@ -43,7 +48,7 @@ export default [
     url: '/user/logout',
     type: 'post',
     response: _ => {
-      return successMsg('success')
+      return successMsg('login.success')
     }
   }
 ]

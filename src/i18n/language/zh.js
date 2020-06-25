@@ -14,7 +14,7 @@ export default {
     username: '账号',
     password: '密码',
     any: '随便填',
-    validUsername: '请输入正确的用户名',
+    validUsername: '账号不能少于5位数',
     validPassword: '密码不能少于6位数'
   },
   home: {

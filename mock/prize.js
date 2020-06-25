@@ -10,7 +10,7 @@ export default [
       const params = config.query
       const prizeList = request.read().get('prizes').value()
       if (!prizeList) {
-        return fail('no data')
+        return fail('prize.list')
       }
       const pageInfo = buildPage(params, prizeList)
       return success(pageInfo)
@@ -24,7 +24,7 @@ export default [
       const { id } = config.query
       const user = request.read().get('prizes').getById(id).value()
       if (!user) {
-        return fail('no data')
+        return fail('prize.get')
       }
       return success(user)
     }
@@ -37,15 +37,15 @@ export default [
       const formData = config.body
       let result = request.read().get('prizes').find({ name: formData.name, description: formData.description }).value()
       if (result) {
-        return fail('repeat user')
+        return fail('prize.create.repeat')
       }
       formData.resetStock = formData.stock
       formData.operateTime = new Date().getTime()
       result = request.read().get('prizes').insert(formData).write()
       if (!result) {
-        return fail('insert data error')
+        return fail('prize.create.saveError')
       }
-      return successMsg('success')
+      return successMsg('prize.update.success')
     }
   },
   // update prize
@@ -56,15 +56,15 @@ export default [
       const formData = config.body
       let result = request.read().get('prizes').find({ name: formData.name, description: formData.description }).value()
       if (result && result.id !== formData.id) {
-        return fail('repeat user')
+        return fail('prize.update.repeat')
       }
       formData.resetStock = formData.stock
       formData.operateTime = new Date().getTime()
       result = request.read().get('prizes').updateById(formData.id, formData).write()
       if (!result) {
-        return fail('update data error')
+        return fail('prize.update.updateError')
       }
-      return successMsg('success')
+      return successMsg('prize.update.success')
     }
   },
   // delete prize
@@ -75,9 +75,9 @@ export default [
       const { id } = config.query
       const result = request.read().get('prizes').removeById(id).write()
       if (!result) {
-        return fail('delete data error')
+        return fail('prize.delete.deleteError')
       }
-      return successMsg('success')
+      return successMsg('prize.delete.success')
     }
   }
 ]

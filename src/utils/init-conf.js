@@ -15,11 +15,11 @@ if (!db.has('tokens').value()) {
       admin: {
         token: 'admin-token'
       },
-      adminPwd: 'admin',
+      adminPwd: '123456',
       editor: {
         token: 'editor-token'
       },
-      editorPwd: 'editor'
+      editorPwd: '111111'
     }
   }).write()
 }

@@ -14,7 +14,7 @@ export default {
     username: 'Username',
     password: 'Password',
     any: 'any',
-    validUsername: 'Please enter the correct user name',
+    validUsername: 'The username can not be less than 5 digits',
     validPassword: 'The password can not be less than 6 digits'
   },
   home: {

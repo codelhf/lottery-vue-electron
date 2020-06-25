@@ -1,3 +1,28 @@
+import Cookies from 'js-cookie'
+import en from './i18n/en.js'
+import zh from './i18n/zh.js'
+
+function resolveLanguage(msg) {
+  let language = Cookies.get('language') || navigator.language || navigator.browserLanguage
+  if (language.indexOf('en') > -1) {
+    language = en
+  } else if (language.indexOf('zh') > -1) {
+    language = zh
+  }
+  return resolveMsg(language, msg)
+}
+
+function resolveMsg(language, fields) {
+  let result = language
+  const fieldArr = fields.split('.')
+  for (let i = 0, iLength = fieldArr.length; i < iLength; i++) {
+    result = result[fieldArr[i]]
+    if (typeof result === 'string' && i === iLength - 1) {
+      return result
+    }
+  }
+}
+
 export function success(data) {
   return {
     code: 'SUCCESS',
@@ -8,21 +33,21 @@ export function success(data) {
 export function successMsg(msg) {
   return {
     code: 'SUCCESS',
-    message: msg
+    message: resolveLanguage(msg)
   }
 }
 
 export function fail(error) {
   return {
     code: 5008,
-    message: error
+    message: resolveLanguage(error)
   }
 }
 
 export function failCodeMsg(code, error) {
   return {
     code: code,
-    message: error
+    message: resolveLanguage(error)
   }
 }
 

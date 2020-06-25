@@ -46,19 +46,11 @@
         {{ $t('login.logIn') }}
       </el-button>
 
-      <div style="position:relative">
-        <div class="tips">
-          <span>{{ $t('login.username') }} : admin</span>
-          <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-        </div>
-      </div>
-
     </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 
 export default {
@@ -68,7 +60,7 @@ export default {
   },
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (value.length < 5) {
         callback(new Error(this.$t('login.validUsername')))
       } else {
         callback()
@@ -84,7 +76,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
