@@ -13,9 +13,9 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <a target="_blank" href="https://github.com/codelhf/lottery-vue-electron">
-            <el-dropdown-item>{{ $t('navbar.github') }}</el-dropdown-item>
-          </a>
+          <el-dropdown-item>
+            <span style="display:block;" @click="openUrl">{{ $t('navbar.github') }}</span>
+          </el-dropdown-item>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
@@ -46,6 +46,9 @@ export default {
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
+    },
+    openUrl() {
+      this.$electron.shell.openExternal('https://github.com/codelhf/lottery-vue-electron')
     },
     async logout() {
       await this.$store.dispatch('user/logout')

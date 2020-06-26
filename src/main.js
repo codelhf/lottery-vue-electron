@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Electron from 'electron'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
@@ -35,6 +36,7 @@ Vue.use(ElementUI, {
 })
 
 Vue.config.productionTip = false
+Vue.prototype.$electron = Electron
 
 new Vue({
   router,
