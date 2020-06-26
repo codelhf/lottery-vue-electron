@@ -1,9 +1,8 @@
-import Cookies from 'js-cookie'
 import en from './i18n/en.js'
 import zh from './i18n/zh.js'
 
 function resolveLanguage(msg) {
-  let language = Cookies.get('language') || (navigator.language || navigator.browserLanguage).toLowerCase()
+  let language = localStorage.getItem('language') || (navigator.language || navigator.browserLanguage).toLowerCase()
   if (language.indexOf('en') > -1) {
     language = en
   } else if (language.indexOf('zh') > -1) {
