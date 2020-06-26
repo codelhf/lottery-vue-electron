@@ -5,20 +5,23 @@
         <el-form-item :label="$t('users.listQuery.username')">
           <el-input v-model="listQuery.username" :placeholder="$t('users.listQuery.placeholderUsername')" />
         </el-form-item>
-        <el-form-item :label="$t('users.listQuery.description')">
-          <el-input v-model="listQuery.description" :placeholder="$t('users.listQuery.placeholderDescription')" />
-        </el-form-item>
         <el-form-item :label="$t('users.listQuery.prizeName')">
           <el-select v-model="listQuery.prizeId" value="" :placeholder="$t('users.listQuery.placeholderPrizeName')">
             <el-option v-for="item in allPrize" :key="item.id" :value="item.id" :label="item.name" />
           </el-select>
         </el-form-item>
-      </el-row>
-      <el-row style="text-align: center">
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('users.listButton.search') }}</el-button>
           <el-button type="primary" icon="el-icon-refresh" @click="handleReset">{{ $t('users.listButton.reset') }}</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="handleDetail()">{{ $t('users.listButton.add') }}</el-button>
+        </el-form-item>
+      </el-row>
+      <el-row style="text-align: right">
+        <el-form-item>
+          <el-button type="primary" size="small" icon="el-icon-plus" @click="handleDetail()">{{ $t('users.listButton.add') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDetail()">{{ $t('users.listButton.delete') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-document" @click="handleDetail()">{{ $t('users.listButton.document') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleDetail()">{{ $t('users.listButton.upload') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-download" @click="handleDetail()">{{ $t('users.listButton.download') }}</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -29,7 +32,9 @@
       :data="list"
       highlight-current-row
       border="border"
+      @selection-change="handleSelectionChange"
     >
+      <el-table-column type="selection" align="center" width="55" />
       <el-table-column :label="$t('users.table.avatar')" align="center">
         <template slot-scope="scope">
           <table-image :src="scope.row.avatar" />
@@ -60,7 +65,7 @@
           <span>{{ scope.row.operateTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('users.table.operation')" fixed="right" align="center" width="160">
+      <el-table-column :label="$t('users.table.operation')" align="center" width="160">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleDetail(scope.row.id)">{{ $t('users.table.edit') }}</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">{{ $t('users.table.delete') }}</el-button>
@@ -122,6 +127,7 @@ export default {
         username: '',
         description: ''
       },
+      multipleSelection: [],
       allPrize: [],
       dialogFormVisible: false,
       user: {
@@ -182,6 +188,9 @@ export default {
         username: '',
         description: ''
       }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     },
     handleDetail(id) {
       this.dialogFormVisible = true

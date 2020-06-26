@@ -19,7 +19,6 @@ function createWindow() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    backgroundColor: '#2d3a4b',
     autoHideMenuBar: true,
     webPreferences: {
     // Use pluginOptions.nodeIntegration, leave this alone

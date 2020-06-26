@@ -8,12 +8,18 @@
         <el-form-item :label="$t('prize.listQuery.description')">
           <el-input v-model="listQuery.description" :placeholder="$t('prize.listQuery.placeholderDescription')" />
         </el-form-item>
-      </el-row>
-      <el-row style="text-align: center">
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('prize.listButton.search') }}</el-button>
           <el-button type="primary" icon="el-icon-refresh" @click="handleReset">{{ $t('prize.listButton.reset') }}</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="handleDetail()">{{ $t('prize.listButton.add') }}</el-button>
+        </el-form-item>
+      </el-row>
+      <el-row style="text-align: right">
+        <el-form-item>
+          <el-button type="primary" size="small" icon="el-icon-plus" @click="handleDetail()">{{ $t('prize.listButton.add') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDetail()">{{ $t('prize.listButton.delete') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-document" @click="handleDetail()">{{ $t('prize.listButton.document') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleDetail()">{{ $t('prize.listButton.upload') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-download" @click="handleDetail()">{{ $t('prize.listButton.download') }}</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -24,7 +30,9 @@
       :data="list"
       highlight-current-row
       border="border"
+      @selection-change="handleSelectionChange"
     >
+      <el-table-column type="selection" align="center" width="55" />
       <el-table-column :label="$t('prize.table.prizeImage')" align="center">
         <template slot-scope="scope">
           <table-image :src="scope.row.image" />
@@ -55,7 +63,7 @@
           <span>{{ scope.row.operateTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('prize.table.operation')" fixed="right" align="center" width="260">
+      <el-table-column :label="$t('prize.table.operation')" align="center" width="260">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handlePrizeUser(scope.row.id)">{{ $t('prize.table.prizeUsers') }}</el-button>
           <el-button type="primary" size="mini" @click="handleDetail(scope.row.id)">{{ $t('prize.table.edit') }}</el-button>
@@ -122,6 +130,7 @@ export default {
         name: '',
         description: ''
       },
+      multipleSelection: [],
       dialogFormVisible: false,
       prize: {
         id: '',
@@ -170,6 +179,9 @@ export default {
         name: '',
         description: ''
       }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     },
     handlePrizeUser(id) {
       this.$router.push(`/user?prizeId=${id}`)

@@ -42,7 +42,11 @@ export default {
     listButton: {
       search: 'Search',
       reset: 'Reset',
-      add: 'Add Prize'
+      add: 'Add Prize',
+      delete: 'Delete Selected',
+      document: 'Template Excel',
+      upload: 'Upload Excel',
+      download: 'Export Excel'
     },
     table: {
       prizeImage: 'Prize Image',
@@ -84,7 +88,11 @@ export default {
     listButton: {
       search: 'Search',
       reset: 'Reset',
-      add: 'Add Users'
+      add: 'Add Users',
+      delete: 'Delete Selected',
+      document: 'Template Excel',
+      upload: 'Upload Excel',
+      download: 'Export Excel'
     },
     table: {
       avatar: 'Avatar',

@@ -42,7 +42,11 @@ export default {
     listButton: {
       search: '搜索',
       reset: '重置',
-      add: '增加奖品'
+      add: '增加奖品',
+      delete: '删除选中',
+      document: '表格模板',
+      upload: '上传表格',
+      download: '导出表格'
     },
     table: {
       prizeImage: '奖品图片',
@@ -84,7 +88,11 @@ export default {
     listButton: {
       search: '搜索',
       reset: '重置',
-      add: '增加人员'
+      add: '增加人员',
+      delete: '删除选中',
+      document: '表格模板',
+      upload: '上传表格',
+      download: '导出表格'
     },
     table: {
       avatar: '人员头像',
