@@ -16,7 +16,7 @@
       <el-row style="text-align: right">
         <el-form-item>
           <el-button type="primary" size="small" icon="el-icon-plus" @click="handleDetail()">{{ $t('prize.listButton.add') }}</el-button>
-          <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDetail()">{{ $t('prize.listButton.delete') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDelete()">{{ $t('prize.listButton.delete') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-document" @click="handleDetail()">{{ $t('prize.listButton.document') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleDetail()">{{ $t('prize.listButton.upload') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-download" @click="handleDetail()">{{ $t('prize.listButton.download') }}</el-button>
@@ -142,10 +142,10 @@ export default {
         operateTime: ''
       },
       prizeRules: {
-        name: [{ required: true, message: '奖品名称不能为空', trigger: 'blur' }],
-        description: [{ required: true, message: '奖品描述不能为空', trigger: 'blur' }],
-        stock: [{ required: true, message: '奖品数量不能为空', trigger: 'blur' }],
-        number: [{ required: true, message: '奖品顺序不能为空', trigger: 'blur' }]
+        name: [{ required: true, message: this.$t('prize.itemRules.name'), trigger: 'blur' }],
+        description: [{ required: true, message: this.$t('prize.itemRules.description'), trigger: 'blur' }],
+        stock: [{ required: true, message: this.$t('prize.itemRules.stock'), trigger: 'blur' }],
+        number: [{ required: true, message: this.$t('prize.itemRules.number'), trigger: 'blur' }]
       }
     }
   },
@@ -219,10 +219,45 @@ export default {
         }
       })
     },
-    handleDelete(ids) {
-      deletePrize(ids).then(res => {
-        this.getList()
-      })
+    handleDelete(id) {
+      let ids = null
+      if (id) {
+        this.$confirm(this.$t('prize.confirm.deleteOne'), this.$t('prize.confirm.title'), {
+          cancelButtonText: this.$t('prize.confirm.cancel'),
+          confirmButtonText: this.$t('prize.confirm.confirm'),
+          type: 'warning'
+        }).then(() => {
+          ids = id
+          deletePrize(ids).then(() => {
+            this.getList()
+          })
+        })
+      } else if (this.multipleSelection.length > 0) {
+        this.$confirm(this.$t('prize.confirm.deleteSelected'), this.$t('prize.confirm.title'), {
+          cancelButtonText: this.$t('prize.confirm.cancel'),
+          confirmButtonText: this.$t('prize.confirm.confirm'),
+          type: 'warning'
+        }).then(() => {
+          const idsArr = []
+          this.multipleSelection.map((item) => {
+            idsArr.push(item.id)
+          })
+          ids = idsArr.join(',')
+          deletePrize(ids).then(() => {
+            this.getList()
+          })
+        })
+      } else {
+        this.$confirm(this.$t('prize.confirm.deleteAll'), this.$t('prize.confirm.title'), {
+          cancelButtonText: this.$t('prize.confirm.cancel'),
+          confirmButtonText: this.$t('prize.confirm.confirm'),
+          type: 'warning'
+        }).then(() => {
+          deletePrize(ids).then(() => {
+            this.getList()
+          })
+        })
+      }
     },
     uploadFilePath(imageUrl) {
       this.prize.image = imageUrl

@@ -72,8 +72,18 @@ export default [
     url: '/prize/',
     type: 'delete',
     response: config => {
-      const { id } = config.query
-      const result = request.read().get('prizes').removeById(id).write()
+      const { ids } = config.query
+      let result = null
+      if (ids) {
+        // delete selected
+        const idArr = ids.split(',')
+        for (const id of idArr) {
+          result = request.read().get('prizes').removeById(id).write()
+        }
+      } else {
+        // delete all
+        result = request.read().set('prizes', []).write()
+      }
       if (!result) {
         return fail('prize.delete.deleteError')
       }

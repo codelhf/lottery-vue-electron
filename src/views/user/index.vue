@@ -18,7 +18,7 @@
       <el-row style="text-align: right">
         <el-form-item>
           <el-button type="primary" size="small" icon="el-icon-plus" @click="handleDetail()">{{ $t('users.listButton.add') }}</el-button>
-          <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDetail()">{{ $t('users.listButton.delete') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDelete(multipleSelection.join(','))">{{ $t('users.listButton.delete') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-document" @click="handleDetail()">{{ $t('users.listButton.document') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleDetail()">{{ $t('users.listButton.upload') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-download" @click="handleDetail()">{{ $t('users.listButton.download') }}</el-button>
@@ -139,8 +139,8 @@ export default {
         operateTime: ''
       },
       userRules: {
-        username: [{ required: true, message: '人员名称不能为空', trigger: 'blur' }],
-        description: [{ required: true, message: '人员描述不能为空', trigger: 'blur' }]
+        username: [{ required: true, message: this.$t('users.itemRules.username'), trigger: 'blur' }],
+        description: [{ required: true, message: this.$t('users.itemRules.description'), trigger: 'blur' }]
       }
     }
   },
@@ -225,10 +225,45 @@ export default {
         }
       })
     },
-    handleDelete(ids) {
-      deleteUser(ids).then(res => {
-        this.getList()
-      })
+    handleDelete(id) {
+      let ids = null
+      if (id) {
+        this.$confirm(this.$t('users.confirm.deleteOne'), this.$t('users.confirm.title'), {
+          cancelButtonText: this.$t('users.confirm.cancel'),
+          confirmButtonText: this.$t('users.confirm.confirm'),
+          type: 'warning'
+        }).then(() => {
+          ids = id
+          deleteUser(ids).then(() => {
+            this.getList()
+          })
+        })
+      } else if (this.multipleSelection.length > 0) {
+        this.$confirm(this.$t('users.confirm.deleteSelected'), this.$t('users.confirm.title'), {
+          cancelButtonText: this.$t('users.confirm.cancel'),
+          confirmButtonText: this.$t('users.confirm.confirm'),
+          type: 'warning'
+        }).then(() => {
+          const idsArr = []
+          this.multipleSelection.map((item) => {
+            idsArr.push(item.id)
+          })
+          ids = idsArr.join(',')
+          deleteUser(ids).then(() => {
+            this.getList()
+          })
+        })
+      } else {
+        this.$confirm(this.$t('users.confirm.deleteAll'), this.$t('users.confirm.title'), {
+          cancelButtonText: this.$t('users.confirm.cancel'),
+          confirmButtonText: this.$t('users.confirm.confirm'),
+          type: 'warning'
+        }).then(() => {
+          deleteUser(ids).then(() => {
+            this.getList()
+          })
+        })
+      }
     },
     uploadFilePath(imageUrl) {
       this.user.avatar = imageUrl

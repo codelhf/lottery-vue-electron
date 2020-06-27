@@ -79,8 +79,18 @@ export default [
     url: '/user/',
     type: 'delete',
     response: config => {
-      const { id } = config.query
-      const result = request.read().get('users').removeById(id).write()
+      const { ids } = config.query
+      let result = null;
+      if (ids) {
+        // delete selected
+        const idArr = ids.split(',')
+        idArr.map((id) => {
+          result = request.read().get('users').removeById(id).write()
+        })
+      } else {
+        // delete all
+        result = request.read().set('users', []).write()
+      }
       if (!result) {
         return fail('users.delete.deleteError')
       }

@@ -48,6 +48,14 @@ export default {
       upload: 'Upload Excel',
       download: 'Export Excel'
     },
+    confirm: {
+      title: 'warning',
+      deleteOne: 'You sure you want to delete it?',
+      deleteSelected: 'Are you sure you want to delete the selected item?',
+      deleteAll: 'Are you sure you want to delete all?',
+      cancel: 'cancel',
+      confirm: 'confirm'
+    },
     table: {
       prizeImage: 'Prize Image',
       prizeName: 'Prize Name',
@@ -74,6 +82,12 @@ export default {
       placeholderNumber: 'Please input Prize Number',
       formCancel: 'Cancel',
       formConfirm: 'Confirm'
+    },
+    itemRules: {
+      name: 'Prize name cannot be empty',
+      description: 'Prize description cannot be empty',
+      stock: 'The number of prizes cannot be empty',
+      number: 'Prize order cannot be empty'
     }
   },
   users: {
@@ -93,6 +107,14 @@ export default {
       document: 'Template Excel',
       upload: 'Upload Excel',
       download: 'Export Excel'
+    },
+    confirm: {
+      title: 'warning',
+      deleteOne: 'You sure you want to delete it?',
+      deleteSelected: 'Are you sure you want to delete the selected item?',
+      deleteAll: 'Are you sure you want to delete all?',
+      cancel: 'cancel',
+      confirm: 'confirm'
     },
     table: {
       avatar: 'Avatar',
@@ -115,6 +137,10 @@ export default {
       placeholderDescription: 'Please input Description',
       formCancel: 'Cancel',
       formConfirm: 'Confirm'
+    },
+    itemRules: {
+      username: 'Person name cannot be empty',
+      description: 'Person description cannot be empty'
     }
   }
 }

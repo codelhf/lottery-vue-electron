@@ -48,6 +48,14 @@ export default {
       upload: '上传表格',
       download: '导出表格'
     },
+    confirm: {
+      title: '提示',
+      deleteOne: '确定要删除吗?',
+      deleteSelected: '确定要删除选中项吗?',
+      deleteAll: '确定要删除全部吗?',
+      cancel: '取消',
+      confirm: '确定'
+    },
     table: {
       prizeImage: '奖品图片',
       prizeName: '奖品名称',
@@ -74,6 +82,12 @@ export default {
       placeholderNumber: '请输入奖品顺序',
       formCancel: '取消',
       formConfirm: '确定'
+    },
+    itemRules: {
+      name: '奖品名称不能为空',
+      description: '奖品描述不能为空',
+      stock: '奖品数量不能为空',
+      number: '奖品顺序不能为空'
     }
   },
   users: {
@@ -93,6 +107,14 @@ export default {
       document: '表格模板',
       upload: '上传表格',
       download: '导出表格'
+    },
+    confirm: {
+      title: '提示',
+      deleteOne: '确定要删除吗?',
+      deleteSelected: '确定要删除选中项吗?',
+      deleteAll: '确定要删除全部吗?',
+      cancel: '取消',
+      confirm: '确定'
     },
     table: {
       avatar: '人员头像',
@@ -115,6 +137,10 @@ export default {
       placeholderDescription: '请输入人员描述',
       formCancel: '取消',
       formConfirm: '确定'
+    },
+    itemRules: {
+      username: '人员名称不能为空',
+      description: '人员描述不能为空'
     }
   }
 }
