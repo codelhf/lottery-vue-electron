@@ -29,7 +29,17 @@ export default {
       success: '切换语言成功'
     },
     upload: {
-      error: '上传头像图片大小不能超过 2MB!'
+      error: '上传头像图片大小不能超过 2MB!',
+      accept: '只能上传jpg/png文件'
+    },
+    uploadExcel: {
+      drag: '将文件拖到此处，或',
+      browse: '点击上传',
+      error: '上传头像图片大小不能超过 10MB!',
+      accept: '只能上传xlsx/xls文件',
+      importExcel: '导入Excel',
+      formCancel: '取消',
+      formConfirm: '确定'
     }
   },
   prize: {

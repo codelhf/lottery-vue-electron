@@ -26,17 +26,24 @@ export default {
   },
   methods: {
     beforeAvatarUpload(file) {
+      if (!this.isImage(file)) {
+        this.$message.error(this.$t('components.upload.accept'))
+        return false
+      }
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isLt2M) {
         this.$message.error(this.$t('components.upload.error'))
       }
-      console.log('before', file)
+      console.log(file)
       // 复制图片
       const fileName = new Date().getTime().toString() + file.name.substr(file.name.lastIndexOf('.'))
       const filePath = path.join(imagePath, fileName)
       fse.copySync(file.path, filePath)
       this.$emit('upload-path', 'local-resource:///' + filePath.replace(/\\/g, '/'))
       return isLt2M
+    },
+    isImage(file) {
+      return /\.(jpg|png)$/.test(file.name)
     }
   }
 }

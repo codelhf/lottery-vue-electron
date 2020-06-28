@@ -89,5 +89,26 @@ export default [
       }
       return successMsg('prize.delete.success')
     }
+  },
+  // batch create prize
+  {
+    url: '/prize/batch',
+    type: 'post',
+    response: config => {
+      const prizeList = config.body
+      for (const i in prizeList) {
+        const prize = prizeList[i]
+        let result = request.read().get('prize').find({ name: prize.username, description: prize.description }).value()
+        if (result && result.id !== prize.id) {
+          return fail('prize.create.repeat')
+        }
+        prize.operateTime = new Date().getTime()
+        result = request.read().get('prize').insert(prize).write()
+        if (!result) {
+          return fail('prize.create.updateError')
+        }
+      }
+      return successMsg('prize.create.success')
+    }
   }
 ]

@@ -18,7 +18,7 @@
           <el-button type="primary" size="small" icon="el-icon-plus" @click="handleDetail()">{{ $t('prize.listButton.add') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDelete()">{{ $t('prize.listButton.delete') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-document" @click="handleDocument()">{{ $t('prize.listButton.document') }}</el-button>
-          <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleDetail()">{{ $t('prize.listButton.upload') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleUpload()">{{ $t('prize.listButton.upload') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-download" @click="handleDownload()">{{ $t('prize.listButton.download') }}</el-button>
         </el-form-item>
       </el-row>
@@ -100,23 +100,37 @@
         <el-button type="primary" @click="handleFormSubmit('prizeForm')">{{ $t('prize.item.formConfirm') }}</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      :title="$t('components.uploadExcel.importExcel')"
+      :visible.sync="dialogUploadVisible"
+      @close="handleUploadClose('uploadExcel')"
+    >
+      <upload-excel ref="uploadExcel" :header="header" @onSuccess="handleUploadSuccess" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleUploadClose('uploadExcel')">{{ $t('components.uploadExcel.formCancel') }}</el-button>
+        <el-button type="primary" @click="handleUploadSubmit('uploadExcel')">{{ $t('components.uploadExcel.formConfirm') }}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchPrizeList, fetchPrize, createPrize, updatePrize, deletePrize } from '@/api/prize'
+import { fetchPrizeList, fetchPrize, createPrize, updatePrize, deletePrize, batchCreatePrize } from '@/api/prize'
 import Pagination from '@/components/Pagination'
 import TableImage from '@/components/TableImage'
 import UploadImage from '@/components/Upload'
+import UploadExcel from '@/components/UploadExcel'
 import { parseTime } from '@/utils'
-import { readExcel, writeExcel } from '@/utils/excel'
+import { writeExcel } from '@/utils/excel'
 
 export default {
   name: 'Prize',
   components: {
     Pagination,
     TableImage,
-    UploadImage
+    UploadImage,
+    UploadExcel
   },
   data() {
     return {
@@ -147,7 +161,15 @@ export default {
         description: [{ required: true, message: this.$t('prize.itemRules.description'), trigger: 'blur' }],
         stock: [{ required: true, message: this.$t('prize.itemRules.stock'), trigger: 'blur' }],
         number: [{ required: true, message: this.$t('prize.itemRules.number'), trigger: 'blur' }]
-      }
+      },
+      dialogUploadVisible: false,
+      header: [
+        { field: 'name', name: this.$t('prize.table.prizeName') },
+        { field: 'description', name: this.$t('prize.table.prizeDesc') },
+        { field: 'stock', name: this.$t('prize.table.prizeStock') },
+        { field: 'number', name: this.$t('prize.table.prizeNumber') }
+      ],
+      prizeList: []
     }
   },
   created() {
@@ -264,13 +286,7 @@ export default {
       this.prize.image = imageUrl
     },
     handleDocument() {
-      const header = [
-        { field: 'name', name: this.$t('prize.table.prizeName') },
-        { field: 'description', name: this.$t('prize.table.prizeDesc') },
-        { field: 'stock', name: this.$t('prize.table.prizeStock') },
-        { field: 'number', name: this.$t('prize.table.prizeNumber') }
-      ]
-      writeExcel({ header: header, filename: this.$t('route.prize') })
+      writeExcel({ header: this.header, filename: this.$t('route.prize') })
     },
     handleDownload() {
       const header = [
@@ -286,6 +302,21 @@ export default {
           item.operateTime = parseTime(item.operateTime)
         })
         writeExcel({ data: data, header: header, filename: this.$t('route.prize') })
+      })
+    },
+    handleUpload() {
+      this.dialogUploadVisible = true
+    },
+    handleUploadClose() {
+      this.dialogUploadVisible = false
+    },
+    handleUploadSuccess(data) {
+      this.prizeList = data
+    },
+    handleUploadSubmit() {
+      batchCreatePrize(this.prizeList).then(() => {
+        this.dialogUploadVisible = false
+        this.getList()
       })
     }
   }

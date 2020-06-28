@@ -29,7 +29,17 @@ export default {
       success: 'Switch Language Success'
     },
     upload: {
-      error: 'The size of the uploaded avatar image cannot exceed 2MB!'
+      error: 'The size of the uploaded avatar image cannot exceed 2MB!',
+      accept: 'Only supports upload jpg/png files'
+    },
+    uploadExcel: {
+      drag: 'Drop excel file here or',
+      browse: 'Browse',
+      error: 'The size of the uploaded avatar image cannot exceed 10MB!',
+      accept: 'Only supports upload xlsx/xls files',
+      importExcel: 'Import Excel',
+      formCancel: 'Cancel',
+      formConfirm: 'Confirm'
     }
   },
   prize: {

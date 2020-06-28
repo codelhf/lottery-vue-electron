@@ -32,10 +32,18 @@ export function updateUser(formData) {
   })
 }
 
-export function deleteUser(id) {
+export function deleteUser(ids) {
   return request({
-    url: '/user/' + id,
+    url: '/user/' + ids,
     method: 'delete',
-    params: { id }
+    params: { ids }
+  })
+}
+
+export function batchCreateUser(userList) {
+  return request({
+    url: '/user/batch',
+    method: 'post',
+    data: userList
   })
 }

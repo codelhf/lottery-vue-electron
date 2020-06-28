@@ -20,7 +20,7 @@
           <el-button type="primary" size="small" icon="el-icon-plus" @click="handleDetail()">{{ $t('users.listButton.add') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDelete()">{{ $t('users.listButton.delete') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-document" @click="handleDocument()">{{ $t('users.listButton.document') }}</el-button>
-          <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleDetail()">{{ $t('users.listButton.upload') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleUpload()">{{ $t('users.listButton.upload') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-download" @click="handleDownload()">{{ $t('users.listButton.download') }}</el-button>
         </el-form-item>
       </el-row>
@@ -95,24 +95,38 @@
         <el-button type="primary" @click="handleFormSubmit('userForm')">{{ $t('users.item.formConfirm') }}</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      :title="$t('components.uploadExcel.importExcel')"
+      :visible.sync="dialogUploadVisible"
+      @close="handleUploadClose('uploadExcel')"
+    >
+      <upload-excel ref="uploadExcel" :header="header" @onSuccess="handleUploadSuccess" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleUploadClose('uploadExcel')">{{ $t('components.uploadExcel.formCancel') }}</el-button>
+        <el-button type="primary" @click="handleUploadSubmit('uploadExcel')">{{ $t('components.uploadExcel.formConfirm') }}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchUserList, fetchUser, createUser, updateUser, deleteUser } from '@/api/users'
+import { fetchUserList, fetchUser, createUser, updateUser, deleteUser, batchCreateUser } from '@/api/users'
 import { fetchPrizeList } from '@/api/prize'
 import Pagination from '@/components/Pagination'
 import TableImage from '@/components/TableImage'
 import UploadImage from '@/components/Upload'
+import UploadExcel from '@/components/UploadExcel'
 import { parseTime } from '@/utils'
-import { readExcel, writeExcel } from '@/utils/excel'
+import { writeExcel } from '../../utils/excel'
 
 export default {
   name: 'Prize',
   components: {
     Pagination,
     TableImage,
-    UploadImage
+    UploadImage,
+    UploadExcel
   },
   data() {
     return {
@@ -142,7 +156,14 @@ export default {
       userRules: {
         username: [{ required: true, message: this.$t('users.itemRules.username'), trigger: 'blur' }],
         description: [{ required: true, message: this.$t('users.itemRules.description'), trigger: 'blur' }]
-      }
+      },
+      dialogUploadVisible: false,
+      header: [
+        { field: 'avatar', name: this.$t('users.table.avatar') },
+        { field: 'username', name: this.$t('users.table.username') },
+        { field: 'description', name: this.$t('users.table.description') }
+      ],
+      userList: []
     }
   },
   created() {
@@ -270,12 +291,7 @@ export default {
       this.user.avatar = imageUrl
     },
     handleDocument() {
-      const header = [
-        { field: 'avatar', name: this.$t('users.table.avatar') },
-        { field: 'username', name: this.$t('users.table.username') },
-        { field: 'description', name: this.$t('users.table.description') }
-      ]
-      writeExcel({ header: header, filename: this.$t('route.users') })
+      writeExcel({ header: this.header, filename: this.$t('route.users') })
     },
     handleDownload() {
       const header = [
@@ -290,6 +306,22 @@ export default {
           item.operateTime = parseTime(item.operateTime)
         })
         writeExcel({ data: data, header: header, filename: this.$t('route.users') })
+      })
+    },
+    handleUpload() {
+      this.dialogUploadVisible = true
+    },
+    handleUploadClose() {
+      this.dialogUploadVisible = false
+    },
+    handleUploadSuccess(data) {
+      this.userList = data
+    },
+    handleUploadSubmit() {
+      console.log(this.userList)
+      batchCreateUser(this.userList).then(() => {
+        this.dialogUploadVisible = false
+        this.getList()
       })
     }
   }

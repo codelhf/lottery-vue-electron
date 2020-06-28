@@ -3,7 +3,7 @@ import XLSX from 'xlsx'
 export function readExcel(file, header, callback) {
   const reader = new FileReader()
   reader.onload = function(e) {
-    const workbook = XLSX.readFile(e.target.result, { type: 'binary' })
+    const workbook = XLSX.read(e.target.result, { type: 'binary' })
     const sheet0 = workbook.Sheets[workbook.SheetNames[0]] // sheet0代表excel表格中的第一页
     const json = XLSX.utils.sheet_to_json(sheet0) // 利用接口实现转换
     // 转换表头
@@ -11,14 +11,13 @@ export function readExcel(file, header, callback) {
     for (const i in json) {
       const item = json[i]
       const item1 = {}
-      for (const k in item) {
-        let val = item[k]
-        for (const hi in header) {
-          const hItem = header[hi]
+      for (const hi in header) {
+        const hItem = header[hi]
+        const key = hItem.field
+        for (const k in item) {
           if (hItem.name === k) {
-            const key = hItem.field
-            const type = hItem.type
-            if (type === 'number') {
+            let val = item[k]
+            if (hItem.type === 'number') {
               val = parseInt(val)
             }
             item1[key] = val

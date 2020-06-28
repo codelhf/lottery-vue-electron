@@ -32,10 +32,18 @@ export function updatePrize(formData) {
   })
 }
 
-export function deletePrize(id) {
+export function deletePrize(ids) {
   return request({
-    url: '/prize/' + id,
+    url: '/prize/' + ids,
     method: 'delete',
-    params: { id }
+    params: { ids }
+  })
+}
+
+export function batchCreatePrize(prizeList) {
+  return request({
+    url: '/prize/batch',
+    method: 'post',
+    data: prizeList
   })
 }

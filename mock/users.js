@@ -83,7 +83,7 @@ export default [
     type: 'delete',
     response: config => {
       const { ids } = config.query
-      let result = null;
+      let result = null
       if (ids) {
         // delete selected
         const idArr = ids.split(',')
@@ -98,6 +98,27 @@ export default [
         return fail('users.delete.deleteError')
       }
       return successMsg('users.delete.success')
+    }
+  },
+  // batch create user
+  {
+    url: '/user/batch',
+    type: 'post',
+    response: config => {
+      const userList = config.body
+      for (const i in userList) {
+        const user = userList[i]
+        let result = request.read().get('users').find({ username: user.username, description: user.description }).value()
+        if (result && result.id !== user.id) {
+          return fail('users.create.repeat')
+        }
+        user.operateTime = new Date().getTime()
+        result = request.read().get('users').insert(user).write()
+        if (!result) {
+          return fail('users.create.updateError')
+        }
+      }
+      return successMsg('users.create.success')
     }
   }
 ]
