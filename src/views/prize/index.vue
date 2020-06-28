@@ -17,9 +17,9 @@
         <el-form-item>
           <el-button type="primary" size="small" icon="el-icon-plus" @click="handleDetail()">{{ $t('prize.listButton.add') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDelete()">{{ $t('prize.listButton.delete') }}</el-button>
-          <el-button type="primary" size="small" icon="el-icon-document" @click="handleDetail()">{{ $t('prize.listButton.document') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-document" @click="handleDocument()">{{ $t('prize.listButton.document') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleDetail()">{{ $t('prize.listButton.upload') }}</el-button>
-          <el-button type="primary" size="small" icon="el-icon-download" @click="handleDetail()">{{ $t('prize.listButton.download') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-download" @click="handleDownload()">{{ $t('prize.listButton.download') }}</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -109,6 +109,7 @@ import Pagination from '@/components/Pagination'
 import TableImage from '@/components/TableImage'
 import UploadImage from '@/components/Upload'
 import { parseTime } from '@/utils'
+import { readExcel, writeExcel } from '@/utils/excel'
 
 export default {
   name: 'Prize',
@@ -261,6 +262,31 @@ export default {
     },
     uploadFilePath(imageUrl) {
       this.prize.image = imageUrl
+    },
+    handleDocument() {
+      const header = [
+        { field: 'name', name: this.$t('prize.table.prizeName') },
+        { field: 'description', name: this.$t('prize.table.prizeDesc') },
+        { field: 'stock', name: this.$t('prize.table.prizeStock') },
+        { field: 'number', name: this.$t('prize.table.prizeNumber') }
+      ]
+      writeExcel({ header: header, filename: this.$t('route.prize') })
+    },
+    handleDownload() {
+      const header = [
+        { field: 'name', name: this.$t('prize.table.prizeName') },
+        { field: 'description', name: this.$t('prize.table.prizeDesc') },
+        { field: 'stock', name: this.$t('prize.table.prizeStock') },
+        { field: 'number', name: this.$t('prize.table.prizeNumber') },
+        { field: 'operateTime', name: this.$t('prize.table.operateTime') }
+      ]
+      fetchPrizeList(null).then((res) => {
+        const data = res.data.list
+        data.map(item => {
+          item.operateTime = parseTime(item.operateTime)
+        })
+        writeExcel({ data: data, header: header, filename: this.$t('route.prize') })
+      })
     }
   }
 }

@@ -18,10 +18,10 @@
       <el-row style="text-align: right">
         <el-form-item>
           <el-button type="primary" size="small" icon="el-icon-plus" @click="handleDetail()">{{ $t('users.listButton.add') }}</el-button>
-          <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDelete(multipleSelection.join(','))">{{ $t('users.listButton.delete') }}</el-button>
-          <el-button type="primary" size="small" icon="el-icon-document" @click="handleDetail()">{{ $t('users.listButton.document') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-delete" @click="handleDelete()">{{ $t('users.listButton.delete') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-document" @click="handleDocument()">{{ $t('users.listButton.document') }}</el-button>
           <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleDetail()">{{ $t('users.listButton.upload') }}</el-button>
-          <el-button type="primary" size="small" icon="el-icon-download" @click="handleDetail()">{{ $t('users.listButton.download') }}</el-button>
+          <el-button type="primary" size="small" icon="el-icon-download" @click="handleDownload()">{{ $t('users.listButton.download') }}</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -105,6 +105,7 @@ import Pagination from '@/components/Pagination'
 import TableImage from '@/components/TableImage'
 import UploadImage from '@/components/Upload'
 import { parseTime } from '@/utils'
+import { readExcel, writeExcel } from '@/utils/excel'
 
 export default {
   name: 'Prize',
@@ -267,6 +268,29 @@ export default {
     },
     uploadFilePath(imageUrl) {
       this.user.avatar = imageUrl
+    },
+    handleDocument() {
+      const header = [
+        { field: 'avatar', name: this.$t('users.table.avatar') },
+        { field: 'username', name: this.$t('users.table.username') },
+        { field: 'description', name: this.$t('users.table.description') }
+      ]
+      writeExcel({ header: header, filename: this.$t('route.users') })
+    },
+    handleDownload() {
+      const header = [
+        { field: 'username', name: this.$t('users.table.username') },
+        { field: 'description', name: this.$t('users.table.description') },
+        { field: 'prizeName', name: this.$t('users.table.prizeName') },
+        { field: 'operateTime', name: this.$t('users.table.operateTime') }
+      ]
+      fetchUserList(null).then((res) => {
+        const data = res.data.list
+        data.map(item => {
+          item.operateTime = parseTime(item.operateTime)
+        })
+        writeExcel({ data: data, header: header, filename: this.$t('route.users') })
+      })
     }
   }
 }

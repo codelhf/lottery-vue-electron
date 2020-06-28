@@ -19,6 +19,9 @@ export default [
           if (item.prizeId && item.prizeId === prize.id) {
             item.prizeImage = prize.image
             item.prizeName = prize.name
+          } else {
+            item.prizeImage = ''
+            item.prizeName = ''
           }
         })
       })
