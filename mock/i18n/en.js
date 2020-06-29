@@ -43,6 +43,12 @@ export default {
     delete: {
       deleteError: 'Failed to delete prize',
       success: 'Successfully deleted prize'
+    },
+    batchCreate: {
+      noPrize: 'No Prize to save',
+      repeat: 'Prize already exists',
+      saveError: 'Failed to batch save prize',
+      success: 'Batch save prizes successfully'
     }
   },
   users: {
@@ -61,6 +67,12 @@ export default {
     delete: {
       deleteError: 'Failed to delete person',
       success: 'Successfully deleted person'
+    },
+    batchCreate: {
+      noUser: 'No User to save',
+      repeat: 'Person already exists',
+      saveError: 'Failed to batch save personnel',
+      success: 'Batch save people successfully'
     }
   }
 }

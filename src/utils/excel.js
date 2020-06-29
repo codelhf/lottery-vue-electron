@@ -80,6 +80,14 @@ export function writeExcel({
         } else {
           cellWidth = { 'wch': val.toString().length }
         }
+        // 判断标题单元格宽度是否大于值单元格宽度
+        if (k.toString().length > val.toString().length) {
+          if (k.toString().charCodeAt(0) > 255) {
+            cellWidth = { 'wch': k.toString().length * 2 }
+          } else {
+            cellWidth = { 'wch': k.toString().length }
+          }
+        }
         rowWidth.push(cellWidth)
       }
       colWidth.push(rowWidth)

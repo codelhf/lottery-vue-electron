@@ -43,6 +43,12 @@ export default {
     delete: {
       deleteError: '删除奖品失败',
       success: '删除奖品成功'
+    },
+    batchCreate: {
+      noPrize: '没有需要保存的奖品',
+      repeat: '奖品已存在',
+      saveError: '批量保存奖品失败',
+      success: '批量保存奖品成功'
     }
   },
   users: {
@@ -61,6 +67,12 @@ export default {
     delete: {
       deleteError: '删除人员失败',
       success: '删除人员成功'
+    },
+    batchCreate: {
+      noUser: '没有要保存的人员',
+      repeat: '人员已存在',
+      saveError: '批量保存人员失败',
+      success: '批量保存人员成功'
     }
   }
 }

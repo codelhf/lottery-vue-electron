@@ -96,19 +96,25 @@ export default [
     type: 'post',
     response: config => {
       const prizeList = config.body
+      if (prizeList.length === 0) {
+        return fail('prize.batchCreate.noPrize')
+      }
       for (const i in prizeList) {
         const prize = prizeList[i]
-        let result = request.read().get('prize').find({ name: prize.username, description: prize.description }).value()
-        if (result && result.id !== prize.id) {
-          return fail('prize.create.repeat')
-        }
-        prize.operateTime = new Date().getTime()
-        result = request.read().get('prize').insert(prize).write()
-        if (!result) {
-          return fail('prize.create.updateError')
+        // 进行表单验证
+        if (prize && prize.name && prize.description && prize.stock && prize.number) {
+          let result = request.read().get('prize').find({ name: prize.username, description: prize.description }).value()
+          if (result) {
+            return fail('prize.batchCreate.repeat')
+          }
+          prize.operateTime = new Date().getTime()
+          result = request.read().get('prize').insert(prize).write()
+          if (!result) {
+            return fail('prize.batchCreate.saveError')
+          }
         }
       }
-      return successMsg('prize.create.success')
+      return successMsg('prize.batchCreate.success')
     }
   }
 ]

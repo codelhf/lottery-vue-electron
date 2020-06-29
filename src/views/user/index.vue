@@ -309,6 +309,7 @@ export default {
       })
     },
     handleUpload() {
+      this.$refs['uploadExcel'].fileList = []
       this.dialogUploadVisible = true
     },
     handleUploadClose() {

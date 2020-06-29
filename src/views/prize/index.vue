@@ -305,6 +305,7 @@ export default {
       })
     },
     handleUpload() {
+      this.$refs['uploadExcel'].fileList = []
       this.dialogUploadVisible = true
     },
     handleUploadClose() {
@@ -314,6 +315,7 @@ export default {
       this.prizeList = data
     },
     handleUploadSubmit() {
+      console.log(this.prizeList)
       batchCreatePrize(this.prizeList).then(() => {
         this.dialogUploadVisible = false
         this.getList()

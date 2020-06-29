@@ -106,16 +106,22 @@ export default [
     type: 'post',
     response: config => {
       const userList = config.body
+      if (userList.length === 0) {
+        return fail('users.batchCreate.noUser')
+      }
       for (const i in userList) {
         const user = userList[i]
-        let result = request.read().get('users').find({ username: user.username, description: user.description }).value()
-        if (result && result.id !== user.id) {
-          return fail('users.create.repeat')
-        }
-        user.operateTime = new Date().getTime()
-        result = request.read().get('users').insert(user).write()
-        if (!result) {
-          return fail('users.create.updateError')
+        // 进行表单验证
+        if (user && user.username && user.description) {
+          let result = request.read().get('users').find({ username: user.username, description: user.description }).value()
+          if (result) {
+            return fail('users.create.repeat')
+          }
+          user.operateTime = new Date().getTime()
+          result = request.read().get('users').insert(user).write()
+          if (!result) {
+            return fail('users.create.saveError')
+          }
         }
       }
       return successMsg('users.create.success')
