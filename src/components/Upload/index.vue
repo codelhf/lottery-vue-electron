@@ -43,7 +43,7 @@ export default {
       return isLt2M
     },
     isImage(file) {
-      return /\.(jpg|png)$/.test(file.name)
+      return /\.(jpg|png|gif)$/.test(file.name)
     }
   }
 }
