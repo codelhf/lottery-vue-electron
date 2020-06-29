@@ -6,6 +6,7 @@ export function readExcel(file, header, callback) {
     const workbook = XLSX.read(e.target.result, { type: 'binary' })
     const sheet0 = workbook.Sheets[workbook.SheetNames[0]] // sheet0代表excel表格中的第一页
     const json = XLSX.utils.sheet_to_json(sheet0) // 利用接口实现转换
+    console.log(json)
     // 转换表头
     const tempData = []
     for (const i in json) {
@@ -16,8 +17,8 @@ export function readExcel(file, header, callback) {
         const key = hItem.field
         for (const k in item) {
           if (hItem.name === k) {
-            let val = item[k]
-            if (hItem.type === 'number') {
+            let val = item[k].toString()
+            if (hItem.type && hItem.type === 'number') {
               val = parseInt(val)
             }
             item1[key] = val

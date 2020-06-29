@@ -78,7 +78,7 @@
       :visible.sync="dialogFormVisible"
       @close="handleFormClose('prizeForm')"
     >
-      <el-form ref="prizeForm" :model="prize" :rules="prizeRules" label-width="120px" label-suffix=":">
+      <el-form ref="prizeForm" :model="prize" :rules="prizeRules()" label-width="120px" label-suffix=":">
         <el-form-item :label="$t('prize.item.image')" prop="image">
           <upload-image :image-url="prize.image" @upload-path="uploadFilePath" />
         </el-form-item>
@@ -106,7 +106,7 @@
       :visible.sync="dialogUploadVisible"
       @close="handleUploadClose('uploadExcel')"
     >
-      <upload-excel ref="uploadExcel" :header="header" @onSuccess="handleUploadSuccess" />
+      <upload-excel :key="timer" :header="header()" @onSuccess="handleUploadSuccess" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleUploadClose('uploadExcel')">{{ $t('components.uploadExcel.formCancel') }}</el-button>
         <el-button type="primary" @click="handleUploadSubmit('uploadExcel')">{{ $t('components.uploadExcel.formConfirm') }}</el-button>
@@ -156,19 +156,8 @@ export default {
         number: '',
         operateTime: ''
       },
-      prizeRules: {
-        name: [{ required: true, message: this.$t('prize.itemRules.name'), trigger: 'blur' }],
-        description: [{ required: true, message: this.$t('prize.itemRules.description'), trigger: 'blur' }],
-        stock: [{ required: true, message: this.$t('prize.itemRules.stock'), trigger: 'blur' }],
-        number: [{ required: true, message: this.$t('prize.itemRules.number'), trigger: 'blur' }]
-      },
       dialogUploadVisible: false,
-      header: [
-        { field: 'name', name: this.$t('prize.table.prizeName') },
-        { field: 'description', name: this.$t('prize.table.prizeDesc') },
-        { field: 'stock', name: this.$t('prize.table.prizeStock') },
-        { field: 'number', name: this.$t('prize.table.prizeNumber') }
-      ],
+      timer: null,
       prizeList: []
     }
   },
@@ -176,6 +165,22 @@ export default {
     this.getList()
   },
   methods: {
+    prizeRules() {
+      return {
+        name: [{ required: true, message: this.$t('prize.itemRules.name'), trigger: 'blur' }],
+        description: [{ required: true, message: this.$t('prize.itemRules.description'), trigger: 'blur' }],
+        stock: [{ required: true, message: this.$t('prize.itemRules.stock'), trigger: 'blur' }],
+        number: [{ required: true, message: this.$t('prize.itemRules.number'), trigger: 'blur' }]
+      }
+    },
+    header() {
+      return [
+        { field: 'name', name: this.$t('prize.table.prizeName') },
+        { field: 'description', name: this.$t('prize.table.prizeDesc') },
+        { field: 'stock', name: this.$t('prize.table.prizeStock'), type: 'number' },
+        { field: 'number', name: this.$t('prize.table.prizeNumber'), type: 'number' }
+      ]
+    },
     getList() {
       this.listLoading = true
       fetchPrizeList(this.listQuery).then(res => {
@@ -286,7 +291,7 @@ export default {
       this.prize.image = imageUrl
     },
     handleDocument() {
-      writeExcel({ header: this.header, filename: this.$t('route.prize') })
+      writeExcel({ header: this.header(), filename: this.$t('route.prize') })
     },
     handleDownload() {
       const header = [
@@ -305,8 +310,8 @@ export default {
       })
     },
     handleUpload() {
-      this.$refs['uploadExcel'].fileList = []
       this.dialogUploadVisible = true
+      this.timer = new Date().getTime()
     },
     handleUploadClose() {
       this.dialogUploadVisible = false
@@ -315,9 +320,10 @@ export default {
       this.prizeList = data
     },
     handleUploadSubmit() {
-      console.log(this.prizeList)
       batchCreatePrize(this.prizeList).then(() => {
         this.dialogUploadVisible = false
+        this.getList()
+      }).catch(() => {
         this.getList()
       })
     }

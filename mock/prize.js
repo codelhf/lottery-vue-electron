@@ -31,7 +31,7 @@ export default [
   },
   // create prize
   {
-    url: '/prize',
+    url: '/prize\$',
     type: 'post',
     response: config => {
       const formData = config.body
@@ -103,12 +103,12 @@ export default [
         const prize = prizeList[i]
         // 进行表单验证
         if (prize && prize.name && prize.description && prize.stock && prize.number) {
-          let result = request.read().get('prize').find({ name: prize.username, description: prize.description }).value()
+          let result = request.read().get('prizes').find({ name: prize.name, description: prize.description }).value()
           if (result) {
-            return fail('prize.batchCreate.repeat')
+            return fail('prize.batchCreate.repeat', prize.name)
           }
           prize.operateTime = new Date().getTime()
-          result = request.read().get('prize').insert(prize).write()
+          result = request.read().get('prizes').insert(prize).write()
           if (!result) {
             return fail('prize.batchCreate.saveError')
           }

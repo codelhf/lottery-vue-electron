@@ -11,7 +11,7 @@
     :on-remove="handleRemove"
   >
     <i class="el-icon-upload" />
-    <div class="el-upload__text">{{ $t('components.uploadExcel.drag') }}<em>{{ $t('components.uploadExcel.browse') }}</em></div>
+    <div class="el-upload__text">{{ $t('components.uploadExcel.drag') }} <em>{{ $t('components.uploadExcel.browse') }}</em></div>
     <div slot="tip" class="el-upload__tip">{{ $t('components.uploadExcel.accept') }}</div>
   </el-upload>
 </template>
@@ -31,6 +31,9 @@ export default {
     return {
       fileList: []
     }
+  },
+  mounted() {
+    this.fileList = []
   },
   methods: {
     beforeAvatarUpload(file) {

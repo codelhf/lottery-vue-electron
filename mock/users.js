@@ -15,13 +15,12 @@ export default [
       const pageInfo = buildPage(params, userList)
       const prizeList = request.read().get('prizes').value()
       pageInfo.list.map(item => {
+        item.prizeImage = ''
+        item.prizeName = ''
         prizeList.map(prize => {
           if (item.prizeId && item.prizeId === prize.id) {
             item.prizeImage = prize.image
             item.prizeName = prize.name
-          } else {
-            item.prizeImage = ''
-            item.prizeName = ''
           }
         })
       })
@@ -43,7 +42,7 @@ export default [
   },
   // create user
   {
-    url: '/user',
+    url: '/user\$',
     type: 'post',
     response: config => {
       const formData = config.body
@@ -115,7 +114,7 @@ export default [
         if (user && user.username && user.description) {
           let result = request.read().get('users').find({ username: user.username, description: user.description }).value()
           if (result) {
-            return fail('users.create.repeat')
+            return fail('users.create.repeat', user.username)
           }
           user.operateTime = new Date().getTime()
           result = request.read().get('users').insert(user).write()

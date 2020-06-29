@@ -29,24 +29,24 @@ export function success(data) {
   }
 }
 
-export function successMsg(msg) {
+export function successMsg(msg, suffix) {
   return {
     code: 'SUCCESS',
-    message: resolveLanguage(msg)
+    message: resolveLanguage(msg) + ' ' + suffix
   }
 }
 
-export function fail(error) {
+export function fail(error, suffix) {
   return {
     code: 5008,
-    message: resolveLanguage(error)
+    message: resolveLanguage(error) + ' ' + suffix
   }
 }
 
-export function failCodeMsg(code, error) {
+export function failCodeMsg(code, error, suffix) {
   return {
     code: code,
-    message: resolveLanguage(error)
+    message: resolveLanguage(error) + ' ' + suffix
   }
 }
 

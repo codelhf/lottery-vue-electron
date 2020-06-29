@@ -79,7 +79,7 @@
       :visible.sync="dialogFormVisible"
       @close="handleFormClose('userForm')"
     >
-      <el-form ref="userForm" :model="user" :rules="userRules" label-width="120px" label-suffix=":">
+      <el-form ref="userForm" :model="user" :rules="itemRules()" label-width="120px" label-suffix=":">
         <el-form-item :label="$t('users.item.avatar')" prop="avatar">
           <upload-image :image-url="user.avatar" @upload-path="uploadFilePath" />
         </el-form-item>
@@ -99,12 +99,12 @@
     <el-dialog
       :title="$t('components.uploadExcel.importExcel')"
       :visible.sync="dialogUploadVisible"
-      @close="handleUploadClose('uploadExcel')"
+      @close="handleUploadClose()"
     >
-      <upload-excel ref="uploadExcel" :header="header" @onSuccess="handleUploadSuccess" />
+      <upload-excel :key="timer" :header="header()" @onSuccess="handleUploadSuccess" />
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleUploadClose('uploadExcel')">{{ $t('components.uploadExcel.formCancel') }}</el-button>
-        <el-button type="primary" @click="handleUploadSubmit('uploadExcel')">{{ $t('components.uploadExcel.formConfirm') }}</el-button>
+        <el-button @click="handleUploadClose()">{{ $t('components.uploadExcel.formCancel') }}</el-button>
+        <el-button type="primary" @click="handleUploadSubmit()">{{ $t('components.uploadExcel.formConfirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -153,16 +153,8 @@ export default {
         prizeId: '',
         operateTime: ''
       },
-      userRules: {
-        username: [{ required: true, message: this.$t('users.itemRules.username'), trigger: 'blur' }],
-        description: [{ required: true, message: this.$t('users.itemRules.description'), trigger: 'blur' }]
-      },
       dialogUploadVisible: false,
-      header: [
-        { field: 'avatar', name: this.$t('users.table.avatar') },
-        { field: 'username', name: this.$t('users.table.username') },
-        { field: 'description', name: this.$t('users.table.description') }
-      ],
+      timer: null,
       userList: []
     }
   },
@@ -175,6 +167,19 @@ export default {
     this.getList()
   },
   methods: {
+    itemRules() {
+      return {
+        username: [{ required: true, message: this.$t('users.itemRules.username'), trigger: 'blur' }],
+        description: [{ required: true, message: this.$t('users.itemRules.description'), trigger: 'blur' }]
+      }
+    },
+    header() {
+      return [
+        { field: 'avatar', name: this.$t('users.table.avatar') },
+        { field: 'username', name: this.$t('users.table.username') },
+        { field: 'description', name: this.$t('users.table.description') }
+      ]
+    },
     getAllPrize() {
       fetchPrizeList({}).then(res => {
         this.allPrize = res.data.list
@@ -291,7 +296,7 @@ export default {
       this.user.avatar = imageUrl
     },
     handleDocument() {
-      writeExcel({ header: this.header, filename: this.$t('route.users') })
+      writeExcel({ header: this.header(), filename: this.$t('route.users') })
     },
     handleDownload() {
       const header = [
@@ -309,8 +314,8 @@ export default {
       })
     },
     handleUpload() {
-      this.$refs['uploadExcel'].fileList = []
       this.dialogUploadVisible = true
+      this.timer = new Date().getTime()
     },
     handleUploadClose() {
       this.dialogUploadVisible = false
@@ -319,9 +324,10 @@ export default {
       this.userList = data
     },
     handleUploadSubmit() {
-      console.log(this.userList)
       batchCreateUser(this.userList).then(() => {
         this.dialogUploadVisible = false
+        this.getList()
+      }).catch(() => {
         this.getList()
       })
     }
