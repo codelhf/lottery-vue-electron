@@ -22,7 +22,13 @@ export default {
     start: 'Start',
     stop: 'Stop',
     single: 'Single',
-    multiple: 'Multiple'
+    multiple: 'Multiple',
+    confirm: {
+      title: 'warning',
+      message: 'Are you sure you want to reset the prize?',
+      cancel: 'Cancel',
+      confirm: 'Confirm'
+    }
   },
   components: {
     langSelect: {

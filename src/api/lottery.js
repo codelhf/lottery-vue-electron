@@ -38,9 +38,10 @@ export function startAll(prizeId) {
   })
 }
 
-export function resetAll() {
+export function resetAll(prizeId) {
   return request({
     url: '/lottery/resetAll',
-    method: 'put'
+    method: 'put',
+    params: { prizeId }
   })
 }

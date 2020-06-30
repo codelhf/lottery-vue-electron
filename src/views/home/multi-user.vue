@@ -74,19 +74,7 @@ export default {
       this.userItemStyle = 'width: 33.33%; height: 33.33%'
       this.usernameStyle = 'font-size: 12px;'
       this.descriptionStyle = 'font-size: 6px;'
-    } else if (this.prizeUser.length === 10) {
-      this.userItemStyle = 'width: 25%; height: 25%'
-      this.usernameStyle = 'font-size: 9px;'
-      this.descriptionStyle = 'font-size: 6px;'
-    } else if (this.prizeUser.length === 11) {
-      this.userItemStyle = 'width: 25%; height: 25%'
-      this.usernameStyle = 'font-size: 9px;'
-      this.descriptionStyle = 'font-size: 6px;'
-    } else if (this.prizeUser.length === 12) {
-      this.userItemStyle = 'width: 25%; height: 25%'
-      this.usernameStyle = 'font-size: 9px;'
-      this.descriptionStyle = 'font-size: 6px;'
-    } else if (this.prizeUser.length > 12) {
+    } else if (this.prizeUser.length >= 10) {
       this.userItemStyle = 'width: 25%; height: 25%'
       this.usernameStyle = 'font-size: 9px;'
       this.descriptionStyle = 'font-size: 6px;'

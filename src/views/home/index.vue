@@ -116,10 +116,21 @@ export default {
       this.$router.push('/prize')
     },
     toReset() {
-      resetAll().then(() => {
-        this.$message.success(this.$t('home.resetMsg'))
-      }, error => {
-        this.$message.error(error)
+      // 校验奖品
+      const prizeId = this.curPrize.id
+      if (!prizeId) {
+        return
+      }
+      this.$confirm(this.$t('home.confirm.message'), this.$t('home.confirm.title'), {
+        cancelButtonText: this.$t('home.confirm.cancel'),
+        confirmButtonText: this.$t('home.confirm.confirm'),
+        type: 'warning'
+      }).then(() => {
+        resetAll(prizeId).then(() => {
+          this.$message.success(this.$t('home.resetMsg'))
+        }, error => {
+          this.$message.error(error)
+        })
       })
     },
     getAllPrize() {

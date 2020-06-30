@@ -22,7 +22,13 @@ export default {
     start: '开始',
     stop: '停止',
     single: '单抽',
-    multiple: '多抽'
+    multiple: '多抽',
+    confirm: {
+      title: '警告',
+      message: '确定要重置该奖品吗？',
+      cancel: '取消',
+      confirm: '确定'
+    }
   },
   components: {
     langSelect: {

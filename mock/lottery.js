@@ -140,20 +140,21 @@ export default [
     url: '/lottery/resetAll',
     type: 'put',
     response: config => {
-      const prizeList = request.read().get('prizes').value()
-      if (prizeList) {
-        prizeList.map(item => {
-          item.stock = item.resetStock
-        })
+      const { prizeId } = config.query
+      const prize = request.read().get('prizes').getById(prizeId).value()
+      if (prize && prize.id === prizeId) {
+        prize.stock = prize.resetStock
       }
-      const resultPrize = request.read().set('prizes', prizeList).write()
+      const resultPrize = request.read().get('prizes').updateById(prize.id, prize).write()
       if (!resultPrize) {
         return fail('lottery.resetAll.resetPrize')
       }
       const userList = request.read().get('users').value()
       if (userList) {
         userList.map(item => {
-          item.prizeId = null
+          if (item.prizeId === prizeId) {
+            item.prizeId = null
+          }
         })
       }
       const resultUser = request.read().set('users', userList).write()
