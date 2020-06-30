@@ -32,6 +32,7 @@ export default [
     url: '/lottery/user',
     type: 'get',
     response: config => {
+      const { prizeId } = config.query
       let users = request.read().get('users').value()
       users = users.filter(item => {
         if (!item.prizeId) {
@@ -40,6 +41,12 @@ export default [
       })
       if (!users || users.length <= 1) {
         return fail('lottery.user')
+      }
+      if (prizeId) {
+        const prize = request.read().get('prizes').getById(prizeId).value()
+        if (users.length <= prize.stock) {
+          return fail('lottery.user')
+        }
       }
       return success(users)
     }

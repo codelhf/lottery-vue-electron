@@ -18,17 +18,18 @@ export default {
     validPassword: 'The password can not be less than 6 digits'
   },
   home: {
-    resetMsg: 'Reset Success',
     start: 'Start',
     stop: 'Stop',
     single: 'Single',
     multiple: 'Multiple',
+    noUser: 'The number of personnel cannot be less than 5',
     confirm: {
       title: 'warning',
       message: 'Are you sure you want to reset the prize?',
       cancel: 'Cancel',
       confirm: 'Confirm'
-    }
+    },
+    resetMsg: 'Reset Success'
   },
   components: {
     langSelect: {

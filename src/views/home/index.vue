@@ -161,8 +161,13 @@ export default {
       // 校验库存
       selectStock(prizeId).then(() => {
         // 校验未中奖人员
-        selectUser().then(res => {
+        selectUser(prizeId).then(res => {
           this.noPrizeUser = res.data
+          // 5 对应下面stopRun的5
+          if (this.noPrizeUser.length < 5) {
+            this.$message.error(this.$t('home.noUser'))
+            return
+          }
           // 先清空数据
           this.stopUserIndex = null
           this.prizeUserIndex = null

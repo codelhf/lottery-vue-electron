@@ -15,10 +15,12 @@ export function selectStock(prizeId) {
   })
 }
 
-export function selectUser() {
+export function selectUser(prizeId) {
+  console.log(prizeId)
   return request({
     url: '/lottery/user',
-    method: 'get'
+    method: 'get',
+    params: { prizeId }
   })
 }
 

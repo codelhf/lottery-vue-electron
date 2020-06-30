@@ -18,17 +18,18 @@ export default {
     validPassword: '密码不能少于6位数'
   },
   home: {
-    resetMsg: '重置成功',
     start: '开始',
     stop: '停止',
     single: '单抽',
     multiple: '多抽',
+    noUser: '人员数量不能少于5人',
     confirm: {
       title: '警告',
       message: '确定要重置该奖品吗？',
       cancel: '取消',
       confirm: '确定'
-    }
+    },
+    resetMsg: '重置成功'
   },
   components: {
     langSelect: {
