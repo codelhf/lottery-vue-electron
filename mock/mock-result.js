@@ -30,23 +30,26 @@ export function success(data) {
 }
 
 export function successMsg(msg, suffix) {
+  const message = suffix ? resolveLanguage(msg) + ' ' + suffix : resolveLanguage(msg)
   return {
     code: 'SUCCESS',
-    message: resolveLanguage(msg) + ' ' + suffix
+    message: message
   }
 }
 
 export function fail(error, suffix) {
+  const message = suffix ? resolveLanguage(error) + ' ' + suffix : resolveLanguage(error)
   return {
     code: 5008,
-    message: resolveLanguage(error) + ' ' + suffix
+    message: message
   }
 }
 
 export function failCodeMsg(code, error, suffix) {
+  const message = suffix ? resolveLanguage(error) + ' ' + suffix : resolveLanguage(error)
   return {
     code: code,
-    message: resolveLanguage(error) + ' ' + suffix
+    message: message
   }
 }
 

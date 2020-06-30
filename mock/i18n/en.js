@@ -8,16 +8,16 @@ export default {
   lottery: {
     prize: 'Please add prizes',
     stock: 'The prizes have been drawn, Please Select Other Prize',
-    user: 'Please invite more people to participate',
+    user: 'Please add more people and more than the number of prizes',
     startOne: {
       noStock: 'The prizes have been drawn, Please Select Other Prize',
-      noUser: 'Please invite more people to participate',
+      noUser: 'Please add more people and more than the number of prizes',
       updatePrize: 'Failed to modify the number of prizes',
       savePrizeUser: 'Failed to save the winning user'
     },
     startAll: {
       noStock: 'The prizes have been drawn, Please Select Other Prize',
-      noUser: 'Please invite more people to participate',
+      noUser: 'Please add more people and more than the number of prizes',
       updatePrize: 'Failed to modify the number of prizes',
       savePrizeUser: 'Failed to save the winning user'
     },

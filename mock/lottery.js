@@ -38,7 +38,7 @@ export default [
           return item
         }
       })
-      if (!users || users.length === 0) {
+      if (!users || users.length <= 1) {
         return fail('lottery.user')
       }
       return success(users)
@@ -51,7 +51,7 @@ export default [
     response: config => {
       const { prizeId } = config.query
       const prize = request.read().get('prizes').find({ id: prizeId }).value()
-      if (!prize || prize.stock === '0') {
+      if (!prize || prize.stock === 0) {
         return fail('lottery.startOne.noStock')
       }
       const userList = request.read().get('users').value()
@@ -60,7 +60,7 @@ export default [
           return item
         }
       })
-      if (!noPrizeUser || noPrizeUser.length === 0) {
+      if (!noPrizeUser || noPrizeUser.length <= 1) {
         return fail('lottery.startOne.noUser')
       }
       // 生成和没有中奖的人数量相同的随机数,list下标从零开始--Random从零开始
@@ -97,7 +97,7 @@ export default [
           return item
         }
       })
-      if (!noPrizeUser || noPrizeUser.length === 0 || prize.stock > noPrizeUser.length) {
+      if (!noPrizeUser || noPrizeUser.length <= prize.stock) {
         return fail('lottery.startAll.noUser')
       }
       // 保存已中奖人员
