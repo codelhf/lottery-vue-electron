@@ -88,7 +88,7 @@ export default [
     response: config => {
       const { prizeId } = config.query
       const prize = request.read().get('prizes').find({ id: prizeId }).value()
-      if (!prize || prize.stock === '0') {
+      if (!prize || prize.stock === 0) {
         return fail('lottery.startAll.noStock')
       }
       const userList = request.read().get('users').value()
@@ -97,7 +97,7 @@ export default [
           return item
         }
       })
-      if (!noPrizeUser || noPrizeUser.length === 0) {
+      if (!noPrizeUser || noPrizeUser.length === 0 || prize.stock > noPrizeUser.length) {
         return fail('lottery.startAll.noUser')
       }
       // 保存已中奖人员
