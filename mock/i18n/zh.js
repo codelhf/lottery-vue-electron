@@ -11,13 +11,13 @@ export default {
     user: '请邀请更多人员参与',
     startOne: {
       noStock: '该类奖品已抽完，请选择其他奖品',
-      noUser: '请邀请更多参与者',
+      noUser: '请邀请更多人员参与',
       updatePrize: '修改奖品数量失败',
       savePrizeUser: '保存中奖用户失败'
     },
     startAll: {
       noStock: '该类奖品已抽完，请选择其他奖品',
-      noUser: '请邀请更多参与者',
+      noUser: '请邀请更多人员参与',
       updatePrize: '修改奖品数量失败',
       savePrizeUser: '保存中奖用户失败'
     },
