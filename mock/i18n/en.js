@@ -7,8 +7,9 @@ export default {
   },
   lottery: {
     prize: 'Please add prizes',
-    stock: 'The prizes have been drawn, Please Select Other Prize',
-    user: 'Please add more people and more than the number of prizes',
+    user: 'Please add people',
+    prizeStock: 'The prizes have been drawn, Please Select Other Prize',
+    noPrizeUser: 'Please add more people and more than the number of prizes',
     startOne: {
       noStock: 'The prizes have been drawn, Please Select Other Prize',
       noUser: 'Please add more people and more than the number of prizes',
@@ -21,9 +22,9 @@ export default {
       updatePrize: 'Failed to modify the number of prizes',
       savePrizeUser: 'Failed to save the winning user'
     },
-    resetAll: {
+    resetStock: {
       resetPrize: 'Failed to reset prize',
-      resetUsers: 'Failed to reset user',
+      resetUsers: 'Failed to reset people',
       success: 'Reset successfully'
     }
   },
@@ -56,8 +57,8 @@ export default {
     get: 'No such person found',
     create: {
       repeat: 'Person already exists',
-      saveError: 'Failed to save personnel',
-      success: 'Save people successfully'
+      saveError: 'Failed to save person',
+      success: 'Save person successfully'
     },
     update: {
       repeat: 'Person already exists',
@@ -69,7 +70,7 @@ export default {
       success: 'Successfully deleted person'
     },
     batchCreate: {
-      noUser: 'No User to save',
+      noUser: 'No person to save',
       repeat: 'Person already exists',
       saveError: 'Failed to batch save personnel',
       success: 'Batch save people successfully'

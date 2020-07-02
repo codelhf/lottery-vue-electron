@@ -14,22 +14,34 @@ export default [
       return success(prizeList)
     }
   },
+  // select user all
+  {
+    url: '/lottery/user',
+    type: 'get',
+    response: config => {
+      const userList = request.read().get('users').value()
+      if (!userList || userList.length === 0) {
+        return fail('lottery.user')
+      }
+      return success(userList)
+    }
+  },
   // select prize stock
   {
-    url: '/lottery/stock',
+    url: '/lottery/prizeStock',
     type: 'get',
     response: config => {
       const { prizeId } = config.query
       const prize = request.read().get('prizes').getById(prizeId).value()
       if (!prize || prize.stock === 0) {
-        return fail('lottery.stock')
+        return fail('lottery.prizeStock')
       }
       return success(prize)
     }
   },
   // select user no prize
   {
-    url: '/lottery/user',
+    url: '/lottery/noPrizeUser',
     type: 'get',
     response: config => {
       const { prizeId } = config.query
@@ -40,12 +52,12 @@ export default [
         }
       })
       if (!users || users.length <= 1) {
-        return fail('lottery.user')
+        return fail('lottery.noPrizeUser')
       }
       if (prizeId) {
         const prize = request.read().get('prizes').getById(prizeId).value()
         if (users.length <= prize.stock) {
-          return fail('lottery.user')
+          return fail('lottery.noPrizeUser')
         }
       }
       return success(users)
@@ -144,7 +156,7 @@ export default [
   },
   // reset all
   {
-    url: '/lottery/resetAll',
+    url: '/lottery/resetStock',
     type: 'put',
     response: config => {
       const { prizeId } = config.query
@@ -154,7 +166,7 @@ export default [
       }
       const resultPrize = request.read().get('prizes').updateById(prize.id, prize).write()
       if (!resultPrize) {
-        return fail('lottery.resetAll.resetPrize')
+        return fail('lottery.resetStock.resetPrize')
       }
       const userList = request.read().get('users').value()
       if (userList) {
@@ -166,9 +178,9 @@ export default [
       }
       const resultUser = request.read().set('users', userList).write()
       if (!resultUser) {
-        return fail('lottery.resetAll.resetUsers')
+        return fail('lottery.resetStock.resetUsers')
       }
-      return success('lottery.resetAll.success')
+      return success('lottery.resetStock.success')
     }
   }
 ]

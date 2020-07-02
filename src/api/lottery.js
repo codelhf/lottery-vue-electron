@@ -7,18 +7,24 @@ export function selectPrize() {
   })
 }
 
-export function selectStock(prizeId) {
+export function selectUser() {
   return request({
-    url: '/lottery/stock',
+    url: '/lottery/user',
+    method: 'get'
+  })
+}
+
+export function selectPrizeStock(prizeId) {
+  return request({
+    url: '/lottery/prizeStock',
     method: 'get',
     params: { prizeId }
   })
 }
 
-export function selectUser(prizeId) {
-  console.log(prizeId)
+export function selectNoPrizeUser(prizeId) {
   return request({
-    url: '/lottery/user',
+    url: '/lottery/noPrizeUser',
     method: 'get',
     params: { prizeId }
   })
@@ -40,9 +46,9 @@ export function startAll(prizeId) {
   })
 }
 
-export function resetAll(prizeId) {
+export function resetStock(prizeId) {
   return request({
-    url: '/lottery/resetAll',
+    url: '/lottery/resetStock',
     method: 'put',
     params: { prizeId }
   })

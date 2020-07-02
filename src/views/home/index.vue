@@ -72,8 +72,9 @@
 </template>
 
 <script>
-import { selectPrize, selectStock, selectUser, startOne, startAll, resetAll } from '@/api/lottery'
+import { selectPrize, selectUser, selectPrizeStock, selectNoPrizeUser, startOne, startAll, resetStock } from '@/api/lottery'
 import LangSelect from '@/components/LangSelect'
+import { clearImage } from '@/utils/init'
 import MultiUser from './multi-user'
 import action from '../../assets/media/action.mp3'
 import jump from '../../assets/media/jump.mp3'
@@ -88,6 +89,7 @@ export default {
     return {
       allPrize: [],
       curPrize: [],
+      allUser: [],
       noPrizeUser: [],
       prizeUser: [],
       showButton: true,
@@ -126,31 +128,47 @@ export default {
         confirmButtonText: this.$t('home.confirm.confirm'),
         type: 'warning'
       }).then(() => {
-        resetAll(prizeId).then(() => {
+        resetStock(prizeId).then(() => {
           this.$message.success(this.$t('home.resetMsg'))
         }, error => {
           this.$message.error(error)
         })
       })
     },
-    getAllPrize() {
-      selectPrize().then(res => {
+    async getAllPrize() {
+      const imageList = []
+      await selectPrize().then(res => {
         this.allPrize = res.data
         // 倒排序
         this.allPrize.sort((a, b) => {
           return b.number - a.number
         })
         this.curPrize = this.allPrize[0]
+        this.allPrize.map(item => {
+          if (item.image) {
+            imageList.push(item.image)
+          }
+        })
+      })
+      await selectUser().then(res => {
+        this.allUser = res.data
+        this.allUser.map(item => {
+          if (item.avatar) {
+            imageList.push(item.avatar)
+          }
+        })
+      })
+      console.log(imageList)
+      clearImage(imageList)
+    },
+    getNoPrizeUser() {
+      selectNoPrizeUser().then(res => {
+        this.noPrizeUser = res.data
       })
     },
     currentPrize(index) {
       this.curPrize = this.allPrize[index]
       console.log(this.curPrize.name)
-    },
-    getNoPrizeUser() {
-      selectUser().then(res => {
-        this.noPrizeUser = res.data
-      })
     },
     startRun() {
       // 校验奖品
@@ -159,9 +177,9 @@ export default {
         return
       }
       // 校验库存
-      selectStock(prizeId).then(() => {
+      selectPrizeStock(prizeId).then(() => {
         // 校验未中奖人员
-        selectUser(prizeId).then(res => {
+        selectNoPrizeUser(prizeId).then(res => {
           this.noPrizeUser = res.data
           // 5 对应下面stopRun的5
           if (this.noPrizeUser.length < 5) {

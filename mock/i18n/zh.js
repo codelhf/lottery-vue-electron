@@ -7,8 +7,9 @@ export default {
   },
   lottery: {
     prize: '请添加奖品',
-    stock: '该类奖品已抽完，请选择其他奖品',
-    user: '请添加更多人员并且大于奖品数量',
+    user: '请添加人员',
+    prizeStock: '该类奖品已抽完，请选择其他奖品',
+    noPrizeUser: '请添加更多人员并且大于奖品数量',
     startOne: {
       noStock: '该类奖品已抽完，请选择其他奖品',
       noUser: '请添加更多人员并且大于奖品数量',
@@ -21,7 +22,7 @@ export default {
       updatePrize: '修改奖品数量失败',
       savePrizeUser: '保存中奖用户失败'
     },
-    resetAll: {
+    resetStock: {
       resetPrize: '重置奖品失败',
       resetUsers: '重置用户失败',
       success: '重置成功'
