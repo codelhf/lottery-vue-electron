@@ -11,11 +11,7 @@ Language: [English](./README-en.md) | [中文简体](./README.md)
 4. 支持Excel方式导入和导出奖品和人员信息
 
 ## 项目预览
-![image](https://github.com/codelhf/lottery-vue-electron/blob/master/image/2020-07-05_1.gif)
-
 ![image](./image/2020-07-05_1.gif)
-
-![image](https://github.com/codelhf/lottery-vue-electron/blob/master/image/2020-07-05_2.jpg)
 
 ![image](./image/2020-07-05_2.jpg)
 
