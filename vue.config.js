@@ -69,7 +69,7 @@ module.exports = {
       nodeIntegration: true,
       builderOptions: {
         'appId': 'com.example.app',
-        'productName': 'lottery', // 项目名，也是生成的安装文件名，即aDemo.exe
+        'productName': 'lottery', // 项目名，也是生成的安装文件名，即lottery.exe
         'copyright': 'Copyright © 2020', // 版权信息
         'directories': {
           'output': './dist_electron'// 输出文件路径
