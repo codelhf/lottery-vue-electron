@@ -11,11 +11,7 @@ Language: [English](./README-en.md) | [中文简体](./README.md)
 4. Support Excel way to import and export prizes and personnel information
 
 ## Project preview
-![image](https://github.com/codelhf/lottery-vue-electron/blob/master/image/2020-07-05_1.gif)
-
 ![image](./image/2020-07-05_3.gif)
-
-![image](https://github.com/codelhf/lottery-vue-electron/blob/master/image/2020-07-05_2.jpg)
 
 ![image](./image/2020-07-05_4.jpg)
 
