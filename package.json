@@ -19,7 +19,7 @@
     "url": "git+https://github.com/codelhf/lottery-vue-electron.git"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "fs-extra": "^9.0.1",
